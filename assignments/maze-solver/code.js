@@ -23,8 +23,8 @@ const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
     }
     f = twicearea * 3;
     return {
-    X: x / f + off.y,
-    Y: y / f + off.x
+    x: x / f + off.y,
+    y: y / f + off.x
     };
 }
 
