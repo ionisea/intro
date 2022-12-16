@@ -54,31 +54,10 @@ const addNumVectors = (a, mode) => {
 const ObjArray = []
 let CoordsArray = []
 
-const getBoundOfObject = (shape)=>{
-    let currX = 0;
-    let currY = 0;
-    let array = []
-    let n;
-    for (let i = 0; i < shape.sides.length; i++) {
-        let rotatedSideCords = rotate(shape.centerX, shape.centerY, shape.centerX + shape.sides[i].xAdd, shape.centerY + shape.sides[i].yAdd, shape.rotation)
-        let numOfSidePixels = Math.floor(Math.sqrt(shape.sides[i].xAdd ** 2 + shape.sides[i].yAdd ** 2))
-        let xAddperpix = (rotatedSideCords[0] - shape.centerX) / numOfSidePixels
-        let yAddperpix = (rotatedSideCords[1] - shape.centerY) / numOfSidePixels
 
-        for (n = 0; n < numOfSidePixels; n++) {
-            array.push({ "x": shape.centerX + (currX + (xAddperpix * n)), "y": shape.centerY + (currY + (yAddperpix * n)) })
-
-        }
-        currX = currX + (xAddperpix * n);
-        currY = currY + (yAddperpix * n);
-    }
-    return array;
-}
 // registerOn.. functions are in quotes as they will not work in this environment
 registerOnclick((x,y) =>{
-//const simulateClick = (x,y) =>{
 CoordsArray.push({x, y})
-//}
 })
 
 
@@ -87,7 +66,7 @@ class Shape {
    this.startingX = coordArray[0].x
    this.startingY = coordArray[0].y
    this.sides = createSides(coordArray)
-   this.verticies = coordArray
+   this.vertices = coordArray
    this.mass = mass
    // todo this.centerX =
    // todo this.centerY =  
