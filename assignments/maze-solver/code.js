@@ -7,13 +7,13 @@ const rotate = (cx, cy, x, y, angle) => {
     return [nx, ny];
 }
 const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
-    var off = pts[0];
-    var twicearea = 0;
-    var x = 0;
-    var y = 0;
-    var p1,p2;
-    var f;
-    for (var i = 0, j = nPts - 1; i < nPts; j = i++) {
+    let off = pts[0];
+    let twicearea = 0;
+    let x = 0;
+    let y = 0;
+    let p1,p2;
+    let f;
+    for (let i = 0, j = nPts - 1; i < nPts; j = i++) {
         p1 = pts[i];
         p2 = pts[j];
         f = (p1.lat - off.lat) * (p2.lng - off.lng) - (p2.lat - off.lat) * (p1.lng - off.lng);
