@@ -98,21 +98,21 @@ class Shape {
     let currX = this.startingX;
     let currY = this.startingY;
 
-    for (let i = 0; i < this.sidesCords.length; i++) {
+    for (let i = 0; i < this.sides.length; i++) {
       let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
-      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sidesCords[i].xAdd, currY + this.sidesCords[i].yAdd, this.rotation)
+      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation)
       drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1], 'black', ctx);
-      currX = currX + this.sidesCords[i].xAdd;
-      currY = currY + this.sidesCords[i].yAdd;
+      currX = currX + this.sides[i].xAdd;
+      currY = currY + this.sides[i].yAdd;
     }
   }
   getBoundOfObject() {
     let currX = this.startingY;
     let currY = this.startingX;
     let array = []
-    for (let i = 0; i < this.sidesCords.length; i++) {
+    for (let i = 0; i < this.sides.length; i++) {
       let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
-      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sidesCords[i].xAdd, currY + this.sidesCords[i].yAdd, this.rotation);
+      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation);
       let numOfSidePixels = Math.round(Math.sqrt(((coordSetStart[0]-coordSetEnd[0]) ** 2) + ((coordSetStart[1]-coordSetEnd[1]) ** 2)));
 
       drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1])
@@ -124,8 +124,8 @@ class Shape {
         array.push({"x" : coordSetStart[0] + n*xAddPerPix, "y" : coordSetStart[1] + n*yAddPerPix})
       }
       
-      currX = currX + this.sidesCords[i].xAdd;
-      currY = currY + this.sidesCords[i].yAdd;
+      currX = currX + this.sides[i].xAdd;
+      currY = currY + this.sides[i].yAdd;
     }
     return array
   }
