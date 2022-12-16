@@ -93,9 +93,6 @@ class Shape {
    this.rotation = 0
    this.actingForce = [addNumVectors(actingForces)]
  }
- clearCoordsArray(){
-   CoordsArray = []
- }
 }
 
 
@@ -124,6 +121,7 @@ const drawShape = (shape) =>{
         currX += shape.sides[i].xAdd;
         currY += shape.sides[i].yAdd;
       }
+    CoordsArray = []
 }
 
 const drawFrame = (time) => {
