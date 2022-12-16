@@ -110,6 +110,7 @@ const createSides = (array) =>{
 //registerOnKeyDown((Space)=>{
   const simulateSpacePress = (mass, actingforces) =>{
   ObjArray.push(new Shape(mass, actingforces, CoordsArray))
+  drawShape(ObjArray[ObjArray.length-1])
   }
 //})
 
