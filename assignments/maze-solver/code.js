@@ -87,6 +87,7 @@ class Shape {
    this.startingX = coordArray[0].x
    this.startingY = coordArray[0].y
    this.sides = createSides(coordArray)
+   this.verticies = coordArray
    this.mass = mass
    // todo this.centerX =
    // todo this.centerY =  
