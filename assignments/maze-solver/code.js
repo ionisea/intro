@@ -75,7 +75,7 @@ const getBoundOfObject = (shape)=>{
     return array;
 }
 // registerOn.. functions are in quotes as they will not work in this environment
-registerOnClick((x,y) =>{
+registerOnclick((x,y) =>{
 //const simulateClick = (x,y) =>{
 CoordsArray.push({x, y})
 //}
