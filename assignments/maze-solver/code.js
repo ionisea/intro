@@ -6,29 +6,8 @@ const rotate = (cx, cy, x, y, angle) => {
         ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
     return [nx, ny];
 }
-const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
-    let off = pts[0];
-    let twicearea = 0;
-    let x = 0;
-    let y = 0;
-    let p1,p2;
-    let f;
-    for (let i = 0, j = nPts - 1; i < nPts; j = i++) {
-        p1 = pts[i];
-        p2 = pts[j];
-        f = (p1.y - off.y) * (p2.x - off.x) - (p2.y - off.y) * (p1.x - off.x);
-        twicearea += f;
-        x += (p1.y + p2.y - 2 * off.y) * f;
-        y += (p1.x + p2.x - 2 * off.x) * f;
-    }
-    f = twicearea * 3;
-    return {
-    x: x / f + off.y,
-    y: y / f + off.x
-    };
-}
 
-//vector manipuyion
+//vector manipulation
 const vector = (angle, magnitude) => {
   return ({ angle: angle * Math.PI / 180, magnitude })
 }
@@ -71,7 +50,7 @@ const addNumVectors = (a, mode) => {
   }
 }
 
-// shape/object manipuyion
+// shape/object manipulation
 const ObjArray = []
 let CoordsArray = []
 
@@ -144,11 +123,10 @@ const createSides = (array) =>{
   ObjArray.push(new Shape(mass, actingforces, CoordsArray))
   ObjArray[ObjArray.length-1].drawShape()
   CoordsArray = []
-  }
+}
 //})
 
 // draw on canvas and make changes to shapes
-
 const drawFrame = (time) => {
   if (time > next) {
     
