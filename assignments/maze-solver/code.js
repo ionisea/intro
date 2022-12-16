@@ -102,9 +102,9 @@ class Shape {
 const createSides = (array) =>{
   const returnArray = []
   for (let v = 0; v<array.length-1; v++){
-    returnArray.push({xMove: array[v].x - array[v+1].x, yMove: array[v].y - array[v+1].y})
+    returnArray.push({xAdd: array[v].x - array[v+1].x, yAdd: array[v].y - array[v+1].y})
   }
-  returnArray.push({xMove: array[array.length-1].x - array[0].x, yMove: array[array.length-1].y - array[0].y})
+  returnArray.push({xAdd: array[array.length-1].x - array[0].x, yAdd: array[array.length-1].y - array[0].y})
   return returnArray
 }
 //registerOnKeyDown((Space)=>{
@@ -116,8 +116,8 @@ const createSides = (array) =>{
 // draw on canvas and make changes to shapes
 const drawShape = (shape) =>{
       let rotaionalPercent = shape.rotation;
-      let currX = shape.x;
-      let currY = shape.y;
+      let currX = shape.startingX;
+      let currY = shape.startingY;
       for(let i = 0; i<shape.sides.length; i++){
         drawLine(currX, currY, currX+shape.sides[i].xAdd, currY+shape.sides[i].yAdd, 'black', ctx);
         currX += shape.sides[i].xAdd;
