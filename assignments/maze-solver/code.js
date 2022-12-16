@@ -95,8 +95,8 @@ class Shape {
    this.actingForce = [addNumVectors(actingForces)]
  }
  drawShape() {
-    let currX = this.x;
-    let currY = this.y;
+    let currX = this.startingX;
+    let currY = this.startingY;
 
     for (let i = 0; i < this.sidesCords.length; i++) {
       let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
@@ -143,7 +143,7 @@ const createSides = (array) =>{
 //registerOnKeyDown((Space)=>{
   const simulateSpacePress = (mass, actingforces) =>{
   ObjArray.push(new Shape(mass, actingforces, CoordsArray))
-  ObjArray[ObjArray.length-1].drawShape()
+  CoordsArray.createSides.drawShape()
   CoordsArray = []
   }
 //})
