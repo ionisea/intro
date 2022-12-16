@@ -102,9 +102,9 @@ class Shape {
 const createSides = (array) =>{
   const returnArray = []
   for (let v = 0; v<array.length-1; v++){
-    returnArray.push({xAdd: array[v].x - array[v+1].x, yAdd: array[v].y - array[v+1].y})
+    returnArray.push({xAdd: array[v+1].x - array[v].x, yAdd: array[v+1].y - array[v].y})
   }
-  returnArray.push({xAdd: array[array.length-1].x - array[0].x, yAdd: array[array.length-1].y - array[0].y})
+  returnArray.push({xAdd: array[0].x - array[array.length-1].x, yAdd: array[0].y - array[array.length-1].y})
   return returnArray
 }
 //registerOnKeyDown((Space)=>{
