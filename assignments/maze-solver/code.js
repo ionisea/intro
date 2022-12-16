@@ -76,7 +76,6 @@ const ObjArray = []
 let CoordsArray = []
 
 
-// registerOn.. functions are in quotes as they will not work in this environment
 registerOnclick((x,y) =>{
 CoordsArray.push({x, y})
 })
