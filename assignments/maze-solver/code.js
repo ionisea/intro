@@ -6,6 +6,27 @@ const rotate = (cx, cy, x, y, angle) => {
         ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
     return [nx, ny];
 }
+const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
+    var off = pts[0];
+    var twicearea = 0;
+    var x = 0;
+    var y = 0;
+    var p1,p2;
+    var f;
+    for (var i = 0, j = nPts - 1; i < nPts; j = i++) {
+        p1 = pts[i];
+        p2 = pts[j];
+        f = (p1.lat - off.lat) * (p2.lng - off.lng) - (p2.lat - off.lat) * (p1.lng - off.lng);
+        twicearea += f;
+        x += (p1.lat + p2.lat - 2 * off.lat) * f;
+        y += (p1.lng + p2.lng - 2 * off.lng) * f;
+    }
+    f = twicearea * 3;
+    return {
+    X: x / f + off.lat,
+    Y: y / f + off.lng
+    };
+}
 
 //vector manipulation
 const vector = (angle, magnitude) => {
@@ -73,6 +94,41 @@ class Shape {
    this.rotation = 0
    this.actingForce = [addNumVectors(actingForces)]
  }
+ drawShape() {
+    let currX = this.x;
+    let currY = this.y;
+
+    for (let i = 0; i < this.sidesCords.length; i++) {
+      let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
+      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sidesCords[i].xAdd, currY + this.sidesCords[i].yAdd, this.rotation)
+      drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1], 'black', ctx);
+      currX = currX + this.sidesCords[i].xAdd;
+      currY = currY + this.sidesCords[i].yAdd;
+    }
+  }
+  getBoundOfObject() {
+    let currX = this.startingY;
+    let currY = this.startingX;
+    let array = []
+    for (let i = 0; i < this.sidesCords.length; i++) {
+      let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
+      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sidesCords[i].xAdd, currY + this.sidesCords[i].yAdd, this.rotation);
+      let numOfSidePixels = Math.round(Math.sqrt(((coordSetStart[0]-coordSetEnd[0]) ** 2) + ((coordSetStart[1]-coordSetEnd[1]) ** 2)));
+
+      drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1])
+      
+      let xAddPerPix = (coordSetEnd[0] - coordSetStart[0])/numOfSidePixels
+      let yAddPerPix = (coordSetEnd[1] - coordSetStart[1])/numOfSidePixels
+
+      for(let n = 0; n<numOfSidePixels; n++){
+        array.push({"x" : coordSetStart[0] + n*xAddPerPix, "y" : coordSetStart[1] + n*yAddPerPix})
+      }
+      
+      currX = currX + this.sidesCords[i].xAdd;
+      currY = currY + this.sidesCords[i].yAdd;
+    }
+    return array
+  }
 }
 
 
@@ -87,22 +143,12 @@ const createSides = (array) =>{
 //registerOnKeyDown((Space)=>{
   const simulateSpacePress = (mass, actingforces) =>{
   ObjArray.push(new Shape(mass, actingforces, CoordsArray))
+  CoordsArray = []
   drawShape(ObjArray[ObjArray.length-1])
   }
 //})
 
 // draw on canvas and make changes to shapes
-const drawShape = (shape) =>{
-      let rotaionalPercent = shape.rotation;
-      let currX = shape.startingX;
-      let currY = shape.startingY;
-      for(let i = 0; i<shape.sides.length; i++){
-        drawLine(currX, currY, currX+shape.sides[i].xAdd, currY+shape.sides[i].yAdd, 'black', ctx);
-        currX += shape.sides[i].xAdd;
-        currY += shape.sides[i].yAdd;
-      }
-    CoordsArray = []
-}
 
 const drawFrame = (time) => {
   if (time > next) {
@@ -120,3 +166,4 @@ const drawFrame = (time) => {
     countFrame++;
   }}
 }
+//animate(drawFrame)
