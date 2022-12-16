@@ -6,14 +6,14 @@ const rotate = (cx, cy, x, y, angle) => {
         ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
     return [nx, ny];
 }
-const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
+const findCenter = (pts) =>{  // stolen from stack overflow by sze ting
     let off = pts[0];
     let twicearea = 0;
     let x = 0;
     let y = 0;
     let p1,p2;
     let f;
-    for (let i = 0, j = nPts - 1; i < nPts; j = i++) {
+    for (let i = 0, j = pts.length - 1; i < pts.length; j = i++) {
         p1 = pts[i];
         p2 = pts[j];
         f = (p1.lat - off.lat) * (p2.lng - off.lng) - (p2.lat - off.lat) * (p1.lng - off.lng);
@@ -23,8 +23,8 @@ const findCenter = (pts, nPts) =>{  // stolen from stack overflow by sze ting
     }
     f = twicearea * 3;
     return {
-    X: x / f + off.lat,
-    Y: y / f + off.lng
+    x: x / f + off.lat,
+    y: y / f + off.lng
     };
 }
 
@@ -52,8 +52,8 @@ const vectorMultiply = (o, n) => {
 }
 const addGrav = (obj, array) =>{
 const gravAttraction = (o1, o2) => {
-  const angle = Math.atan2(o2.centerY - o1.centerY, o2.centerX - o1.centerX)
-  const distance = Math.hypot(Math.abs(o1.centerX - o2.centerX), Math.abs(o1.centerY - o2.centerY))
+  const angle = Math.atan2(o2.center.y - o1.center.y, o2.center.x - o1.center.x)
+  const distance = Math.hypot(Math.abs(o1.center.x - o2.center.x), Math.abs(o1.center.y - o2.center.y))
   if (distance === 0) return vector(0,0)
   else return vector(angle, (o1.mass * o2.mass * 6.6743e-11) / distance ** 2)
 }
@@ -88,8 +88,7 @@ class Shape {
    this.sides = createSides(coordArray)
    this.vertices = coordArray
    this.mass = mass
-   // todo this.centerX =
-   // todo this.centerY =  
+   this.center = findCenter(coordArray)
    this.rotation = 0
    this.actingForce = [addNumVectors(actingForces)]
  }
@@ -98,8 +97,8 @@ class Shape {
     let currY = this.startingY;
 
     for (let i = 0; i < this.sides.length; i++) {
-      let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
-      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation)
+      let coordSetStart = rotate(this.center.x, this.center.y, currX, currY, this.rotation)
+      let coordSetEnd = rotate(this.center.x, this.center.y, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation)
       drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1], 'black', ctx);
       currX = currX + this.sides[i].xAdd;
       currY = currY + this.sides[i].yAdd;
@@ -110,8 +109,8 @@ class Shape {
     let currY = this.startingX;
     let array = []
     for (let i = 0; i < this.sides.length; i++) {
-      let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
-      let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation);
+      let coordSetStart = rotate(this.center.x, this.center.y, currX, currY, this.rotation)
+      let coordSetEnd = rotate(this.center.x, this.center.y, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation);
       let numOfSidePixels = Math.round(Math.sqrt(((coordSetStart[0]-coordSetEnd[0]) ** 2) + ((coordSetStart[1]-coordSetEnd[1]) ** 2)));
 
       drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1])
