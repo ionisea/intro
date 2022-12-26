@@ -1,3 +1,10 @@
+//may not work
+const getCenter = (arr) =>{
+  const xAvg = arr.reduce((a,e) => a+e.x,0) / arr.length
+  const yAvg = arr.reduce((a,e) => a+e.y,0) / arr.length
+  return {x: xAvg, y: yAvg}
+}
+
 const rotate = (cx, cy, x, y, angle) => {
     let radians = (Math.PI / 180) * angle,
      cos = Math.cos(radians),
