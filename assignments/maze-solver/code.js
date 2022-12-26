@@ -128,7 +128,7 @@ const createSides = (array) =>{
   const simulateSpacePress = (mass, actingforces) =>{
   ObjArray.push(new Shape(mass, actingforces, CoordsArray))
   ObjArray[ObjArray.length-1].drawShape()
-  drawFilledCircle (ObjArray[ObjArray.length-1].centerX,ObjArray[ObjArray.length-1].centerY, 5, "white")
+  drawFilledCircle (ObjArray[ObjArray.length-1].centerX,ObjArray[ObjArray.length-1].centerY, 1, "white")
   CoordsArray = []
 }
 //})
