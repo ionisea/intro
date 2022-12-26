@@ -7,10 +7,9 @@ const getBoundCenter = (arr) =>{
   for (const e of arr){
     if (e.x < xMinMax.min) xMinMax.min = e.x
     if (e.x > xMinMax.max) xMinMax.max = e.x
-    else{
     if (e.y < yMinMax.min) yMinMax.min = e.y
     if (e.y > yMinMax.max) yMinMax.max = e.y
-  }}
+  }
   return {x: (xMinMax.min + xMinMax.max)/2 , y: (yMinMax.min + yMinMax.max)/2 }
 }
 
