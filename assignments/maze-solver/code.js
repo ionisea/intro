@@ -12,7 +12,7 @@ const add2Vectors = (a) => {
   const x2 = Math.cos(a[1].angle) * a[1].magnitude
   const y1 = Math.sin(a[0].angle) * a[0].magnitude
   const y2 = Math.sin(a[1].angle) * a[1].magnitude
-  const angle = Math.atan2(y1 + y2, x1 + x2) * 180 / Math.PI
+  const angle = radToDeg(Math.atan2(y1 + y2, x1 + x2))
   const mag = Math.sqrt((x1 + x2) ** 2 + (y1 + y2) ** 2)
   return ({ angle, magnitude: mag })
 }
