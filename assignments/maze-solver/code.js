@@ -1,10 +1,7 @@
 //rotational acceleration???
 
 drawFilledRect(0,0,width,height, 'black')
-const getCenter = (arr) =>{
-  if (arr.length ==3) {
-    return {x: arr.reduce((a,e) => a+e.x,0) / arr.length, y: arr.reduce((a,e) => a+e.y,0) / arr.length}
-  }
+const getBoundCenter = (arr) =>{
   let xMinMax = {min: arr[0].x, max: arr[0].x}
   let yMinMax =  {min: arr[0].y, max: arr[0].y}
   for (const e of arr){
