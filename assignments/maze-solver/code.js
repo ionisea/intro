@@ -2,9 +2,17 @@ drawFilledRect(0, 0, width, height, 'black')
 const Density = 100 // measured in kg/pixel
 const ObjArray = []
 let CircleCoords = []
+const detectCollision = (object, array) =>{
+  for(const element of array){
+    if (object.radius+ element.radius < Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))){
+      return Math.atan2()
+    }
+  }
+}
 class Shape{
   constructor(radius, activeForce, coordinates){
-    this.mass = 
+    this.mass = (Math.PI * radius) **2
+
   }
 }
 
