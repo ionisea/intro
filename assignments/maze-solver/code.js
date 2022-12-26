@@ -1,4 +1,4 @@
-drawFilledRect(0,0,width,height, 'white')
+drawFilledRect(0,0,width,height, 'black')
 const getCenter = (arr) =>{
   let xMinMax = {min: arr[0].x, max: arr[0].x}
   let yMinMax =  {min: arr[0].y, max: arr[0].y}
@@ -69,7 +69,7 @@ let CoordsArray = []
 
 
 registerOnclick((x,y) =>{
-drawFilledCircle(x,y,2,'black')
+drawFilledCircle(x,y,2,'white')
 CoordsArray.push({x, y})
 })
 
@@ -93,7 +93,7 @@ class Shape {
     for (let i = 0; i < this.sides.length; i++) {
       let coordSetStart = rotate(this.centerX, this.centerY, currX, currY, this.rotation)
       let coordSetEnd = rotate(this.centerX, this.centerY, currX + this.sides[i].xAdd, currY + this.sides[i].yAdd, this.rotation)
-      drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1], 'black', ctx);
+      drawLine(coordSetStart[0], coordSetStart[1], coordSetEnd[0], coordSetEnd[1], 'white', ctx);
       currX = currX + this.sides[i].xAdd;
       currY = currY + this.sides[i].yAdd;
     }
