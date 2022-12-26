@@ -4,7 +4,7 @@ let CircleDraw = []
 
 
 registerOnclick((x, y) => {
-  drawFilledCircle(x, y, 2, CircleDraw.length <= 1 ? 'red' : 'black')
+  drawFilledCircle(x, y, 2, CircleDraw.length < 1 ? 'red' : 'black')
   CircleDraw.push({ x, y })
 
 })
