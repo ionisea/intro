@@ -75,7 +75,7 @@ class Shape {
    this.mass = mass
    this.centerX = getCenter(coordArray).x
    this.centerY = getCenter(coordArray).y
-   this.rotation = 0
+   this.rotation = 15
    this.actingForce = [addNumVectors(actingForces)]
  }
  drawShape() {
