@@ -1,6 +1,6 @@
 //convenience functions
-const degToRad = (radAngle) => radAngle * 180 / Math.PI
-const radToDeg = (degAngle) => degAngle * Math.PI / 180
+const degToRad = (radAngle) => radAngle * Math.PI / 180
+const radToDeg = (degAngle) => degAngle * 180 / Math.PI
 
 //vectors
 const vector = (angle, magnitude) => {
