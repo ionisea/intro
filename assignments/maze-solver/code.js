@@ -1,10 +1,15 @@
 drawFilledRect(0, 0, width, height, 'black')
 const ObjArray = []
-let CircleDraw = []
-
+let CircleCoords = []
+const drawnCircle = (coordArray) => {
+  if (coordArray.length == 2){
+    const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
+    drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
+  }
+}
 
 registerOnclick((x, y) => {
-  drawFilledCircle(x, y, 2, CircleDraw.length < 1 ? 'red' : 'black')
-  CircleDraw.push({ x, y })
-
+  drawFilledCircle(x, y, 2, CircleCoords.length < 1 ? 'red' : 'black')
+  CircleCoords.push({ x, y })
+  drawnCircle(CircleCoords)
 })
