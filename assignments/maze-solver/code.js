@@ -74,8 +74,8 @@ class Shape {
    this.sides = createSides(coordArray)
    this.vertices = coordArray
    this.mass = mass
-   // todo this.centerX =
-   // todo this.centerY =  
+   this.centerX = getCenter(coordArray).x
+   this.centerY = getCenter(coordArray).y
    this.rotation = 0
    this.actingForce = [addNumVectors(actingForces)]
  }
