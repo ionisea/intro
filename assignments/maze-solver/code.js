@@ -31,6 +31,7 @@ let Density = 100 // measured in kg/pixel, redefine in REPL
 const ObjArray = []
 let CircleCoords = []
 //object
+//detectcollision has no use for now
 const detectCollision = (object, array) =>{
   for(const element of array){
     if (object.radius+ element.radius < Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))){
@@ -50,7 +51,7 @@ const drawnCircle = (coordArray) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
     const force = [vector(
-    Math.atan2(coordArray[0].y - coordArray[2].y, coordArray[0].x - coordArray[2].x),
+    Math.atan2(coordArray[2].y - coordArray[0].y, coordArray[2].x - coordArray[0].x),
     Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
     )]
     drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
