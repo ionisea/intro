@@ -1,6 +1,7 @@
 //rotational acceleration???
 
 drawFilledRect(0,0,width,height, 'black')
+
 const getBoundCenter = (arr) =>{
   let xMinMax = {min: arr[0].x, max: arr[0].x}
   let yMinMax =  {min: arr[0].y, max: arr[0].y}
@@ -71,7 +72,7 @@ let CoordsArray = []
 
 
 registerOnclick((x,y) =>{
-drawFilledCircle(x,y,2,'white')
+drawFilledCircle(x,y,1.7,'white')
 CoordsArray.push({x, y})
 })
 
