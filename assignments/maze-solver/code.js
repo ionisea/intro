@@ -27,7 +27,7 @@ const vectorMultiply = (o, n) => {
 
 //global
 drawFilledRect(0, 0, width, height, 'black')
-let Density = 100 // measured in kg/pixel
+let Density = 100 // measured in kg/pixel, redefine in REPL
 const ObjArray = []
 let CircleCoords = []
 //object
