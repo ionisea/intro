@@ -1,3 +1,5 @@
+//rotational acceleration???
+
 drawFilledRect(0,0,width,height, 'black')
 const getCenter = (arr) =>{
   if (arr.length ==3) {
