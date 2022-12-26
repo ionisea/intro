@@ -68,6 +68,7 @@ let CoordsArray = []
 
 
 registerOnclick((x,y) =>{
+drawFilledCircle(x,y,2,'black')
 CoordsArray.push({x, y})
 })
 
