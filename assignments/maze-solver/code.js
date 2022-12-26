@@ -1,4 +1,4 @@
-drawFilledRect(width,height,0,0, 'white')
+drawFilledRect(0,0,width,height, 'white')
 const getCenter = (arr) =>{
   let xMinMax = {min: arr[0].x, max: arr[0].x}
   let yMinMax =  {min: arr[0].y, max: arr[0].y}
