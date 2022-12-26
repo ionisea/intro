@@ -1,7 +1,13 @@
 const getCenter = (arr) =>{
-  const xAvg = arr.reduce((a,e) => a+e.x,0) / arr.length
-  const yAvg = arr.reduce((a,e) => a+e.y,0) / arr.length
-  return {x: xAvg, y: yAvg}
+  let xMinMax = {min: arr[0].x, max: arr[0].x}
+  let yMinMax =  {min: arr[0].y, max: arr[0].y}
+  for (const e of arr){
+    if (e.x < xMinMax.min) xMinMax.min = e.x
+    if (e.x > xMinMax.max) xMinMax.max = e.x
+    if (e.y < yMinMax.min) yMinMax.min = e.y
+    if (e.y > yMinMax.max) yMinMax.max = e.y
+  }
+  return {x: (xMinMax.min + xMinMax.max)/2 , y: (yMinMax.min + yMinMax.max)/2 }
 }
 
 const rotate = (cx, cy, x, y, angle) => {
