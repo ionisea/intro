@@ -44,13 +44,13 @@ class Shape{
 const drawnCircle = (coordArray,) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
-    const movementVector = {
-    magnitude: Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y)), 
-    angle: Math.atan2()
-    }
+    const force = vector(
+    Math.atan2(),
+    Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
+    )
     drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
-    //drawLine(coordArray[0].x, coordArray[0].y, coordArray[1].x, coordArray[1].y, 1, 'white')
-    ObjArray.push(new Shape(radius, ))
+    drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'white')
+    ObjArray.push(new Shape(radius, vector))
     CircleCoords = []
   }
 }
