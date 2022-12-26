@@ -9,7 +9,7 @@ const drawnCircle = (coordArray) => {
 }
 
 registerOnclick((x, y) => {
-  drawFilledCircle(x, y, 2.5, CircleCoords.length < 1 ? 'red' : 'white')
+  drawFilledCircle(x, y, 2, CircleCoords.length < 1 ? 'red' : 'white')
   CircleCoords.push({ x, y })
   drawnCircle(CircleCoords)
 })
