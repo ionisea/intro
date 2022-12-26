@@ -4,7 +4,7 @@ const radToDeg = (degAngle) => degAngle * 180 / Math.PI
 
 //vectors
 const vector = (angle, magnitude) => {
-  return ({ angle: angle * Math.PI / 180, magnitude })
+  return ({ angle: angle, magnitude })
 }
 
 const add2Vectors = (a) => {
