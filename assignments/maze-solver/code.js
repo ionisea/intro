@@ -1,3 +1,7 @@
+//convenience functions
+const degToRad = (radAngle) => radAngle * 180 / Math.PI
+const radToDeg = (degAngle) => degAngle * Math.PI / 180
+
 //vectors
 const vector = (angle, magnitude) => {
   return ({ angle: angle * Math.PI / 180, magnitude })
@@ -45,12 +49,12 @@ const drawnCircle = (coordArray,) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
     const force = vector(
-    Math.atan2(),
+    Math.atan2(element.y - object.y, element.x - object.x),
     Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
     )
     drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
     drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'white')
-    ObjArray.push(new Shape(radius, vector))
+    ObjArray.push(new Shape(radius, force))
     CircleCoords = []
   }
 }
