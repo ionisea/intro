@@ -45,11 +45,11 @@ class Shape{
   }
 }
 
-const drawnCircle = (coordArray,) => {
+const drawnCircle = (coordArray) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
     const force = vector(
-    Math.atan2(element.y - object.y, element.x - object.x),
+    Math.atan2(coordArray[0].y - coordArray[2].y, coordArray[0].x - coordArray[2].x),
     Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
     )
     drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
