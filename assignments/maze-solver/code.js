@@ -31,10 +31,10 @@ const ObjArray = []
 let CircleCoords = []
 
 //object
-const detectCollisions = (object, array) =>{
+const detectCollisions = (object) =>{
   const collisions = []
   let index = 0;
-  for(const element of array){
+  for(const element of ObjArray){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if (object.radius + element.radius > distance && distance != 0){
       collisions.push({object: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
@@ -71,3 +71,9 @@ registerOnclick((x, y) => {
   CircleCoords.push({ x, y })
   drawnCircle(CircleCoords)
 })
+
+const nextFrame = () =>{
+  for (const element of ObjArray){
+
+  } 
+}
