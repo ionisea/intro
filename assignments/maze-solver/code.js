@@ -33,11 +33,10 @@ let CircleCoords = []
 const detectCollision = (object, array) =>{
   for(const element of array){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
-    if (object.radius+ element.radius > distance && distance != 0){
+    if ((object.radius+ element.radius > distance) && (distance != 0)){
       return Math.atan2(element.y - object.y, element.x - object.x)
     }
   }
-  return undefined
 }
 class Shape{
   constructor(radius, activeForce, x,y){
