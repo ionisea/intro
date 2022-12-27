@@ -106,6 +106,6 @@ const nextFrame = () =>{
     console.log('element', index, JSON.stringify(element))
     element.draw()
     index++
-    element.force = addNumVectors(element.force)
+    //element.force = addNumVectors(element.force)
   }
 }
