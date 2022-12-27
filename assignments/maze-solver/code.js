@@ -32,12 +32,14 @@ let CircleCoords = []
 
 //object
 const detectCollision = (object, array) =>{
+  const collisions = []
   for(const element of array){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if ((object.radius + element.radius > distance) && (distance != 0)){
-      return Math.atan2(element.y - object.y, element.x - object.x)
+      collisions.push({object: array.indexOf(element), angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
   }
+  return collisions
 }
 
 class Shape{
