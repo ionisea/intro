@@ -43,8 +43,8 @@ const evalCollisions = (object) =>{
     index++
   }
   for (const element of collisions){
-    returnObject.x = avg[object.x, element.source.x]
-    returnObject.y = avg[object.y, element.source.y]
+    returnObject.x = avg([object.x, element.source.x])
+    returnObject.y = avg([object.y, element.source.y])
     returnObject.radius += element.source.radius
     // add vectors at some point
     ObjArray[element.index] = []
