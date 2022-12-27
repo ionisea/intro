@@ -3,8 +3,9 @@ const degToRad = (radAngle) => radAngle * Math.PI / 180
 const radToDeg = (degAngle) => degAngle * 180 / Math.PI
 const vector = (angle, magnitude) => {angle, magnitude}
 const avg = (array) => array.reduce((a,e) => a+e, 0)/array.length
+const twoPointAngle = (a, b) => Math.atan2(b.y - a.y, b.x - a.x)
+const twoPointDist = (a, b) => Math.hypot(Math.abs(a.x-b.x), Math.abs(a.y-b.y))
 //vector manipulation
-
 const add2Vectors = (a) => { // takes array containing 2 vectors
   const x1 = Math.cos(a[0].angle) * a[0].magnitude
   const x2 = Math.cos(a[1].angle) * a[1].magnitude
@@ -13,6 +14,16 @@ const add2Vectors = (a) => { // takes array containing 2 vectors
   const angle = Math.atan2(y1 + y2, x1 + x2)
   const mag = Math.sqrt((x1 + x2) ** 2 + (y1 + y2) ** 2)
   return ({ angle, magnitude: mag })
+}
+   
+const addNumVectors = (a, mode) => {
+  if (mode === 'degrees') {
+    const r = a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))
+    r.angle = r.angle * 180 / Math.PI
+    return r
+  } else {
+    return a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))
+  }
 }
 
 const vectorMultiply = (o, n) => {
@@ -68,7 +79,10 @@ class Shape{
 const drawnCircle = (coordArray) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
-    const force = [vector(Math.atan2(coordArray[2].y - coordArray[0].y, coordArray[2].x - coordArray[0].x), Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y)))]
+    const force = [vector(
+    twoPointAngle(coordArray[0], coordArray[2]),
+    Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
+    )]
     drawCircle(coordArray[0].x, coordArray[0].y, radius, Theme.draw)
     drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'Theme.draw')
     ObjArray.push(new Shape(radius, force, CircleCoords[0].x, CircleCoords[0].y))
@@ -84,6 +98,7 @@ registerOnclick((x, y) => {
 
 const nextFrame = () =>{
   for (let element of ObjArray){
-
+    addNumVectors()
+    element = evalCollisions(element)
   } 
 }
