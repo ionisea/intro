@@ -24,12 +24,13 @@ const vectorMultiply = (o, n) => {
 }
 
 //global
-drawFilledRect(0, 0, width, height, 'black')
+const Theme = {background: 'black', draw: 'white', accents: 'red'}
+drawFilledRect(0, 0, width, height, Theme.background)
 let Density = 100 // measured in kg/pixel, redefine in REPL
 const ObjArray = []
 let CircleCoords = []
+
 //object
-//detectcollision has no use for now
 const detectCollision = (object, array) =>{
   for(const element of array){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
@@ -38,6 +39,7 @@ const detectCollision = (object, array) =>{
     }
   }
 }
+
 class Shape{
   constructor(radius, activeForce, x,y){
     this.mass = (Math.PI * radius) **2 * Density
@@ -53,15 +55,15 @@ const drawnCircle = (coordArray) => {
     Math.atan2(coordArray[2].y - coordArray[0].y, coordArray[2].x - coordArray[0].x),
     Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
     )]
-    drawCircle(coordArray[0].x, coordArray[0].y, radius, 'white')
-    drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'white')
+    drawCircle(coordArray[0].x, coordArray[0].y, radius, Theme.draw)
+    drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'Theme.draw')
     ObjArray.push(new Shape(radius, force, CircleCoords[0]))
     CircleCoords = []
   }
 }
 
 registerOnclick((x, y) => {
-  drawFilledCircle(x, y, 2, CircleCoords.length < 1 ? 'red' : 'white')
+  drawFilledCircle(x, y, 2, CircleCoords.length < 1 ? Theme.accents : Theme.draw)
   CircleCoords.push({ x, y })
   drawnCircle(CircleCoords)
 })
