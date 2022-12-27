@@ -22,7 +22,7 @@ const addNumVectors = (a, mode) => {
     r.angle = r.angle * 180 / Math.PI
     return r
   } else {
-    return a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))
+    return [a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))]
   }
 }
 
@@ -100,6 +100,6 @@ registerOnclick((x, y) => {
 const nextFrame = () =>{
   for (let element of ObjArray){
     element = evalCollisions(element)
-    addNumVectors(element.force)
+    element.force = addNumVectors(element.force)
   } 
 }
