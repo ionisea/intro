@@ -36,8 +36,8 @@ const vectorMultiply = (o, n) => {
 
 //global
 let Theme = {background: 'black', draw: 'white', accents: 'red'}
-let Density = 100
-drawFilledRect(0, 0, width, height, Theme.background) // measured in kg/pixel, redefine in REPL
+let Density = 100 // measured in kg/pixel, redefine in REPL
+drawFilledRect(0, 0, width, height, Theme.background) 
 const ObjArray = []
 let CircleCoords = []
 
@@ -60,7 +60,7 @@ const evalCollisions = (object) =>{
     returnObject.radius = Math.sqrt(object.area)/Math.PI
     returnObject.force.concat(element.force)
     // add vectors at some point
-    ObjArray[element.index] = []
+    ObjArray.splice(index,1)
   }
   return returnObject
 }
@@ -108,4 +108,5 @@ const nextFrame = () =>{
     //element.force = addNumVectors(element.force)
     element.draw()
   } 
+  drawFilledRect(0, 0, width, height, Theme.background)
 }
