@@ -103,10 +103,10 @@ registerOnclick((x, y) => {
 
 const nextFrame = () =>{
   clear()
+  drawFilledRect(0, 0, width, height, Theme.background)
   for (let element of ObjArray){
     element = evalCollisions(element)
     //element.force = addNumVectors(element.force)
     element.draw()
-  } 
-  drawFilledRect(0, 0, width, height, Theme.background)
+  }
 }
