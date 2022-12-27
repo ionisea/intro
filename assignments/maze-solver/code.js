@@ -71,7 +71,7 @@ class Shape{
     this.mass = this.area * Density
     this.x = x
     this.y = y
-    this.force = activeForce
+    this.force = [activeForce]
     this.radius = radius
   }
 
