@@ -48,7 +48,7 @@ const evalCollisions = (object) =>{
   let index = 0;
   for(const element of ObjArray){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
-    if (object.radius + element.radius > distance && distance != 0){
+    if ((object.radius + element.radius > distance) && (distance != 0)){
       collisions.push({source: element, index: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
     index++
