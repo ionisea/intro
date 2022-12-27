@@ -16,14 +16,8 @@ const add2Vectors = (a,b) => { // takes array containing 2 vectors
   return ({ angle, magnitude: mag })
 }
    
-const addNumVectors = (a, mode) => {
-  if (mode === 'degrees') {
-    const r = a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))
-    r.angle = r.angle * 180 / Math.PI
-    return r
-  } else {
+const addNumVectors = (a) => {
     return [a.reduce((acc, x) => add2Vectors(acc, x), vector(0, 0))]
-  }
 }
 
 const vectorMultiply = (o, n) => {
