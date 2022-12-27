@@ -101,5 +101,6 @@ const nextFrame = () =>{
   for (let element of ObjArray){
     element = evalCollisions(element)
     //element.force = addNumVectors(element.force)
+    drawCircle
   } 
 }
