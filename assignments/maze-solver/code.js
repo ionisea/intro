@@ -49,6 +49,7 @@ const evalCollisions = (object) =>{
     // add vectors at some point
     ObjArray[element.index] = []
   }
+  return returnObject
 }
 
 class Shape{
