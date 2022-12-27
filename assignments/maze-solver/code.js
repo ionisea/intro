@@ -36,7 +36,7 @@ const detectCollision = (object, array) =>{
   for(const element of array){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if ((object.radius + element.radius < distance) && (distance != 0)){
-      collisions.push({object: array.indexOf(element), angle: Math.atan2(element.y - object.y, element.x - object.x)})
+      collisions.push({object: array.findIndex(element), angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
   }
   return collisions
@@ -48,6 +48,7 @@ class Shape{
     this.location = {x,y}
     this.force = activeForce
   }
+
 }
 
 const drawnCircle = (coordArray) => {
