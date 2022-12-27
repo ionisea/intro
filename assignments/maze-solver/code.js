@@ -53,6 +53,7 @@ const evalCollisions = (object) =>{
     }
     index++
   }
+  console.log(JSON.stringify(collisions))
   for (const element of collisions){
     returnObject.x = avg([object.x, element.source.x])
     returnObject.y = avg([object.y, element.source.y])
