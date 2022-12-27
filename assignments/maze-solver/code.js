@@ -24,7 +24,7 @@ const vectorMultiply = (o, n) => {
 }
 
 //global
-const Theme = {background: 'black', draw: 'white', accents: 'red'}
+let Theme = {background: 'black', draw: 'white', accents: 'red'}
 drawFilledRect(0, 0, width, height, Theme.background)
 let Density = 100 // measured in kg/pixel, redefine in REPL
 const ObjArray = []
