@@ -75,9 +75,13 @@ class Shape{
     this.radius = radius
   }
 
+  draw(){
+    drawCircle(this.x,this.y,this.radius,Theme.draw, 1)
+    drawFilledCircle(this.x,this.y,2,Theme.accents)
+  }
 }
 
-const drawnCircle = (coordArray) => {
+const initDraw = (coordArray) => {
   if (coordArray.length == 3){
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
     const force = [vector(
@@ -94,7 +98,7 @@ const drawnCircle = (coordArray) => {
 registerOnclick((x, y) => {
   drawFilledCircle(x, y, 2, CircleCoords.length < 1 ? Theme.accents : Theme.draw)
   CircleCoords.push({ x, y })
-  drawnCircle(CircleCoords)
+  initDraw(CircleCoords)
 })
 
 const nextFrame = () =>{
@@ -102,6 +106,6 @@ const nextFrame = () =>{
   for (let element of ObjArray){
     element = evalCollisions(element)
     //element.force = addNumVectors(element.force)
-    drawCircle
+    element.draw()
   } 
 }
