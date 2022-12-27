@@ -2,10 +2,10 @@
 const degToRad = (radAngle) => radAngle * Math.PI / 180
 const radToDeg = (degAngle) => degAngle * 180 / Math.PI
 const vector = (angle, magnitude) => {angle, magnitude}
-
+const avg = (array) => array.reduce((a,e) => a+e, 0)
 //vector manipulation
 
-const add2Vectors = (a) => {
+const add2Vectors = (a) => { // takes array containing 2 vectors
   const x1 = Math.cos(a[0].angle) * a[0].magnitude
   const x2 = Math.cos(a[1].angle) * a[1].magnitude
   const y1 = Math.sin(a[0].angle) * a[0].magnitude
@@ -31,17 +31,24 @@ const ObjArray = []
 let CircleCoords = []
 
 //object
-const detectCollisions = (object) =>{
-  const collisions = []
+const evalCollisions = (object) =>{
+  const returnObject = object;
+  const collisions = [];
   let index = 0;
   for(const element of ObjArray){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if (object.radius + element.radius > distance && distance != 0){
-      collisions.push({object: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
+      collisions.push({index: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
     index++
   }
-  return collisions
+  for (const element of collisions){
+    returnObject.x = avg[object.x, element.x]
+    returnObject.y = avg[object.y, element.y]
+    returnObject.radius += element.radius
+    // add vectors at some point
+    ObjArray[element.index] = []
+  }
 }
 
 class Shape{
@@ -73,7 +80,7 @@ registerOnclick((x, y) => {
 })
 
 const nextFrame = () =>{
-  for (const element of ObjArray){
+  for (let element of ObjArray){
 
   } 
 }
