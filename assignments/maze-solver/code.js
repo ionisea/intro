@@ -106,6 +106,7 @@ const nextFrame = () =>{
   drawFilledRect(0, 0, width, height, Theme.background)
   for (let element of ObjArray){
     element = evalCollisions(element)
+    console.log(element)
     //element.force = addNumVectors(element.force)
     element.draw()
   }
