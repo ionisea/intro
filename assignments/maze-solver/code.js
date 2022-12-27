@@ -60,7 +60,7 @@ const evalCollisions = (object) =>{
     returnObject.area += element.source.area
     returnObject.radius = Math.sqrt(object.area)/Math.PI
     returnObject.force.concat(element.force)
-    ObjArray.splice(index,1)
+    ObjArray[index] = ''
   }
   return returnObject
 }
@@ -105,9 +105,10 @@ const nextFrame = () =>{
   clear()
   drawFilledRect(0, 0, width, height, Theme.background)
   for (let element of ObjArray){
+    if (element != ''){
     element = evalCollisions(element)
     console.log(JSON.stringify(element))
     //element.force = addNumVectors(element.force)
     element.draw()
-  }
+  }}
 }
