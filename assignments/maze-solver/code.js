@@ -2,7 +2,7 @@
 const degToRad = (radAngle) => radAngle * Math.PI / 180
 const radToDeg = (degAngle) => degAngle * 180 / Math.PI
 const vector = (angle, magnitude) => {angle, magnitude}
-const avg = (array) => array.reduce((a,e) => a+e, 0)
+const avg = (array) => array.reduce((a,e) => a+e, 0)/array.length
 //vector manipulation
 
 const add2Vectors = (a) => { // takes array containing 2 vectors
@@ -45,7 +45,8 @@ const evalCollisions = (object) =>{
   for (const element of collisions){
     returnObject.x = avg([object.x, element.source.x])
     returnObject.y = avg([object.y, element.source.y])
-    returnObject.radius += element.source.radius
+    returnObject.area += element.source.area
+    returnObject.radius = Math.sqrt(area)/Math.PI
     // add vectors at some point
     ObjArray[element.index] = []
   }
@@ -54,7 +55,8 @@ const evalCollisions = (object) =>{
 
 class Shape{
   constructor(radius, activeForce, x,y){
-    this.mass = (Math.PI * radius) **2 * Density
+    this.area = (Math.PI * radius) **2
+    this.mass = this.area * Density
     this.x = x
     this.y = y
     this.force = activeForce
