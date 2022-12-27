@@ -60,8 +60,7 @@ const evalCollisions = (object) =>{
     returnObject.area += element.source.area
     returnObject.radius = Math.sqrt(object.area)/Math.PI
     returnObject.force.concat(element.force)
-    // add vectors at some point
-    ObjArray.splice(index,1)
+    ObjArray[index] = ''
   }
   return returnObject
 }
