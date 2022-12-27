@@ -6,7 +6,7 @@ const avg = (array) => array.reduce((a,e) => a+e, 0)/array.length
 const twoPointAngle = (a, b) => Math.atan2(b.y - a.y, b.x - a.x)
 const twoPointDist = (a, b) => Math.hypot(Math.abs(a.x-b.x), Math.abs(a.y-b.y))
 //vector manipulation
-const add2Vectors = (a,b) => { // takes array containing 2 vectors
+const add2Vectors = (a,b) => { // takes 2 vectors
   const x1 = Math.cos(a.angle) * a.magnitude
   const x2 = Math.cos(b.angle) * b.magnitude
   const y1 = Math.sin(a.angle) * a.magnitude
@@ -47,7 +47,7 @@ const evalCollisions = (object) =>{
     }
     index++
   }
-  console.log('collisions;',JSON.stringify(collisions))
+  //console.log('collisions;',JSON.stringify(collisions))
   let col = 0
   for (const element of collisions){
     returnObject.x = avg([object.x, element.source.x])
@@ -103,7 +103,7 @@ const nextFrame = () =>{
   let index = 0
   for (let element of ObjArray){
     ObjArray[index] = evalCollisions(element)
-    console.log('element', index, JSON.stringify(element))
+    //console.log('element', index, JSON.stringify(element))
     element.draw()
     index++
     //element.force = addNumVectors(element.force)
