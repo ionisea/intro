@@ -61,7 +61,7 @@ const drawnCircle = (coordArray) => {
     )]
     drawCircle(coordArray[0].x, coordArray[0].y, radius, Theme.draw)
     drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'Theme.draw')
-    ObjArray.push(new Shape(radius, force, CircleCoords[0]))
+    ObjArray.push(new Shape(radius, force, CircleCoords[0].x, CircleCoords[0].y))
     CircleCoords = []
   }
 }
