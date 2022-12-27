@@ -45,7 +45,8 @@ const detectCollisions = (object, array) =>{
 class Shape{
   constructor(radius, activeForce, x,y){
     this.mass = (Math.PI * radius) **2 * Density
-    this.location = {x,y}
+    this.x = x
+    this.y = y
     this.force = activeForce
   }
 
