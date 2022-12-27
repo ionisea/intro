@@ -33,11 +33,13 @@ let CircleCoords = []
 //object
 const detectCollisions = (object, array) =>{
   const collisions = []
+  let index = 0;
   for(const element of array){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if ((object.radius + element.radius > distance)){
-      collisions.push({object: array.findIndex(element), angle: Math.atan2(element.y - object.y, element.x - object.x)})
+      collisions.push({object: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
+    index++
   }
   return collisions
 }
