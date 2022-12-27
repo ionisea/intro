@@ -57,7 +57,8 @@ const evalCollisions = (object) =>{
     returnObject.x = avg([object.x, element.source.x])
     returnObject.y = avg([object.y, element.source.y])
     returnObject.area += element.source.area
-    returnObject.radius = Math.sqrt(returnObject.area)/Math.PI
+    returnObject.radius = Math.sqrt(object.area)/Math.PI
+    returnObject.force.concat(element.force)
     // add vectors at some point
     ObjArray[element.index] = []
   }
@@ -98,7 +99,7 @@ registerOnclick((x, y) => {
 
 const nextFrame = () =>{
   for (let element of ObjArray){
-    addNumVectors()
     element = evalCollisions(element)
+    addNumVectors(element.force)
   } 
 }
