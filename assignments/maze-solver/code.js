@@ -6,11 +6,11 @@ const avg = (array) => array.reduce((a,e) => a+e, 0)/array.length
 const twoPointAngle = (a, b) => Math.atan2(b.y - a.y, b.x - a.x)
 const twoPointDist = (a, b) => Math.hypot(Math.abs(a.x-b.x), Math.abs(a.y-b.y))
 //vector manipulation
-const add2Vectors = (a) => { // takes array containing 2 vectors
-  const x1 = Math.cos(a[0].angle) * a[0].magnitude
-  const x2 = Math.cos(a[1].angle) * a[1].magnitude
-  const y1 = Math.sin(a[0].angle) * a[0].magnitude
-  const y2 = Math.sin(a[1].angle) * a[1].magnitude
+const add2Vectors = (a,b) => { // takes array containing 2 vectors
+  const x1 = Math.cos(a.angle) * a.magnitude
+  const x2 = Math.cos(b.angle) * b.magnitude
+  const y1 = Math.sin(a.angle) * a.magnitude
+  const y2 = Math.sin(b.angle) * b.magnitude
   const angle = Math.atan2(y1 + y2, x1 + x2)
   const mag = Math.sqrt((x1 + x2) ** 2 + (y1 + y2) ** 2)
   return ({ angle, magnitude: mag })
@@ -22,7 +22,7 @@ const addNumVectors = (a, mode) => {
     r.angle = r.angle * 180 / Math.PI
     return r
   } else {
-    return [a.reduce((acc, x) => add2Vectors([acc, x]), vector(0, 0))]
+    return [a.reduce((acc, x) => add2Vectors(acc, x), vector(0, 0))]
   }
 }
 
