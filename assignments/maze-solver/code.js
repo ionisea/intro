@@ -48,13 +48,15 @@ const evalCollisions = (object) =>{
     index++
   }
   console.log('collisions;',JSON.stringify(collisions))
+  let col = 0
   for (const element of collisions){
     returnObject.x = avg([object.x, element.source.x])
     returnObject.y = avg([object.y, element.source.y])
     returnObject.area += element.source.area
     returnObject.radius = Math.sqrt(object.area)/Math.PI
     returnObject.force.concat(element.force)
-    ObjArray.splice(element.index,1)
+    ObjArray.splice(element.index -col,1)
+    col++
   }
   return returnObject
 }
