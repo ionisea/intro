@@ -98,6 +98,7 @@ registerOnclick((x, y) => {
 })
 
 const nextFrame = () =>{
+  clear()
   for (let element of ObjArray){
     element = evalCollisions(element)
     //element.force = addNumVectors(element.force)
