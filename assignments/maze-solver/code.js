@@ -38,14 +38,14 @@ const evalCollisions = (object) =>{
   for(const element of ObjArray){
     const distance = Math.hypot(Math.abs(object.x - element.x), Math.abs(object.y - element.y))
     if (object.radius + element.radius > distance && distance != 0){
-      collisions.push({index: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
+      collisions.push({source: element, index: index, angle: Math.atan2(element.y - object.y, element.x - object.x)})
     }
     index++
   }
   for (const element of collisions){
-    returnObject.x = avg[object.x, element.x]
-    returnObject.y = avg[object.y, element.y]
-    returnObject.radius += element.radius
+    returnObject.x = avg[object.x, element.source.x]
+    returnObject.y = avg[object.y, element.source.y]
+    returnObject.radius += element.source.radius
     // add vectors at some point
     ObjArray[element.index] = []
   }
