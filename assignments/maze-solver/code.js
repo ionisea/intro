@@ -71,7 +71,7 @@ class Shape{
     this.mass = this.area * Density
     this.x = x
     this.y = y
-    this.force = [activeForce]
+    this.force = activeForce
     this.radius = radius
   }
 
@@ -82,7 +82,7 @@ const drawnCircle = (coordArray) => {
     const radius = Math.hypot(Math.abs(coordArray[0].x-coordArray[1].x),Math.abs(coordArray[0].y-coordArray[1].y))
     const force = [vector(
     twoPointAngle(coordArray[0], coordArray[2]),
-    Math.hypot(Math.abs(coordArray[0].x-coordArray[2].x),Math.abs(coordArray[0].y-coordArray[2].y))
+    twoPointDist(coordArray[0], coordArray[2])
     )]
     drawCircle(coordArray[0].x, coordArray[0].y, radius, Theme.draw)
     drawLine(coordArray[0].x, coordArray[0].y, coordArray[2].x, coordArray[2].y, 1, 'Theme.draw')
