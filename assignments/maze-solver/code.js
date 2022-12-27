@@ -53,7 +53,7 @@ const evalCollisions = (object) =>{
     }
     index++
   }
-  console.log(JSON.stringify(collisions))
+  console.log('collisions;',JSON.stringify(collisions))
   for (const element of collisions){
     returnObject.x = avg([object.x, element.source.x])
     returnObject.y = avg([object.y, element.source.y])
@@ -107,7 +107,7 @@ const nextFrame = () =>{
   let index = 0
   for (let element of ObjArray){
     ObjArray[index] = evalCollisions(element)
-    console.log(JSON.stringify(element))
+    console.log('element', index, JSON.stringify(element))
     //element.force = addNumVectors(element.force)
     element.draw()
     index++
