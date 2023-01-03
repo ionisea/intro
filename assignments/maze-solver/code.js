@@ -98,6 +98,7 @@ registerOnclick((x, y) => {
 })
 
 const nextFrame = () =>{
+  CircleCoords = []
   clear()
   drawFilledRect(0, 0, width, height, Theme.background)
   let index = 0
