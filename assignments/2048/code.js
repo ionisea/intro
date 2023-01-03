@@ -4,15 +4,32 @@
 drawFilledRect(0,0,width,height, 'black')
 
 const getBoundCenter = (arr) =>{
-  let xMinMax = {min: arr[0].x, max: arr[0].x}
+  const sigma = (start, end, funct) => {
+  let sum = 0
+  for (let n = start; n <= end; n++) {
+    sum += funct(n)
+  }
+  return sum
+  }
+const findCentroid = (points) => {
+  const pts = points.concat(points[0])
+  const area = (sigma(0, pts.length - 2, i => (pts[i].x * pts[i + 1].y) - (pts[i + 1].x * pts[i].y))) / 2
+  const x = (sigma(0, pts.length - 2, i => (pts[i].x + pts[i + 1].x) * ((pts[i].x * pts[i + 1].y) - (pts[i + 1].x * pts[i].y)))) / (6 * area)
+  const y = (sigma(0, pts.length - 2, i => (pts[i].y + pts[i + 1].y) * ((pts[i].x * pts[i + 1].y) - (pts[i + 1].x * pts[i].y)))) / (6 * area)
+  return ({x, y})
+}
+const returner = findCentroid(arr)
+return returner
+ /* let xMinMax = {min: arr[0].x, max: arr[0].x}
   let yMinMax =  {min: arr[0].y, max: arr[0].y}
   for (const e of arr){
     if (e.x < xMinMax.min) xMinMax.min = e.x
     if (e.x > xMinMax.max) xMinMax.max = e.x
     if (e.y < yMinMax.min) yMinMax.min = e.y
     if (e.y > yMinMax.max) yMinMax.max = e.y
-  }
-  return {x: (xMinMax.min + xMinMax.max)/2 , y: (yMinMax.min + yMinMax.max)/2 }
+  }*/
+
+  //return {x: (xMinMax.min + xMinMax.max)/2 , y: (yMinMax.min + yMinMax.max)/2 }
 }
 
 const rotate = (cx, cy, x, y, angle) => {
