@@ -1,7 +1,35 @@
 
 //rotational acceleration???
+const detectSelfIntersection = (shape) => {
+  shape.getBoundOfObject
+}
 
 drawFilledRect(0,0,width,height, 'black')
+
+const collisions = (shapes) => {
+  const collisionPoints = []
+
+  for (let shapeNum = 0; shapeNum < shapes.length; shapeNum++) {
+    for (let shapeNumCheck = shapeNum; shapeNumCheck < shapes.length; shapeNumCheck++) {
+      if (shapeNum != shapeNumCheck) {
+        const currShapeBounds = shapes[shapeNum].getBoundOfObject()
+        const currShapeBoundsCheck = shapes[shapeNumCheck].getBoundOfObject()
+
+        for (let currShapeBoundsIndex = 0; currShapeBoundsIndex < currShapeBounds.length; currShapeBoundsIndex++) {
+          for (let currShapeBoundsCheckIndex = 0; currShapeBoundsCheckIndex < currShapeBoundsCheck.length; currShapeBoundsCheckIndex++) {
+
+            if (Math.sqrt((currShapeBounds[currShapeBoundsIndex].x - currShapeBoundsCheck[currShapeBoundsCheckIndex].x) ** 2 + (currShapeBounds[currShapeBoundsIndex].y - currShapeBoundsCheck[currShapeBoundsCheckIndex].y) ** 2) <= 1) {
+              //object add
+              collisionPoints.push({ "x": currShapeBounds[currShapeBoundsIndex].x, "y": currShapeBounds[currShapeBoundsIndex].y, "shape1": shapes[shapeNum], "shape2": shapes[shapeNumCheck] })
+            }
+          }
+        }
+      }
+    }
+  }
+  //returns an array of objects that have a x, y point of collison and the shapes involoved
+  return collisionPoints;
+}
 
 const getBoundCenter = (arr) =>{
   const sigma = (start, end, funct) => {
