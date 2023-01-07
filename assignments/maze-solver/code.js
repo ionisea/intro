@@ -1,7 +1,7 @@
 //convenience functions
 const degToRad = (radAngle) => radAngle * Math.PI / 180
 const radToDeg = (degAngle) => degAngle * 180 / Math.PI
-const vector = (angle, magnitude) => {angle, magnitude}
+const vector = (angle, magnitude) => {return {angle, magnitude}}
 const avg = (array) => array.reduce((a,e) => a+e, 0)/array.length
 const twoPointAngle = (a, b) => Math.atan2(b.y - a.y, b.x - a.x)
 const twoPointDist = (a, b) => Math.hypot(Math.abs(a.x-b.x), Math.abs(a.y-b.y))
