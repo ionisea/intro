@@ -104,7 +104,7 @@ const nextFrame = () =>{
   let index = 0
   for (let element of ObjArray){
     ObjArray[index] = evalCollisions(element)
-    //console.log('element', index, JSON.stringify(element))
+    console.log('element', index, JSON.stringify(element))
     element.draw()
     index++
     element.force = addNumVectors(element.force)
