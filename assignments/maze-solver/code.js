@@ -17,7 +17,7 @@ const add2Vectors = (a,b) => { // takes 2 vectors
 }
    
 const addNumVectors = (a) => {
-    return [a.reduce((acc, x) => add2Vectors(acc, x), vector(0, 0))]
+    return [a.reduce(add2Vectors, vector(0, 0))]
 }
 
 const vectorMultiply = (o, n) => {
@@ -107,6 +107,6 @@ const nextFrame = () =>{
     //console.log('element', index, JSON.stringify(element))
     element.draw()
     index++
-    //element.force = addNumVectors(element.force)
+    element.force = addNumVectors(element.force)
   }
 }
