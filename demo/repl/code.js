@@ -24,5 +24,5 @@ const dispTest = (vel, angle) =>{
   const h = vel
   const p = Math.sin(90-angle)* h
   const b = Math.sqrt(h**2 - p**2)
-  return {xChange: b, yChange: h}
+  return {xChange: b, yChange: y}
 }
