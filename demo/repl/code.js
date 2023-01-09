@@ -24,5 +24,5 @@ const dispTest = (vel, angle) =>{
   const h = vel
   const p = Math.cos(angle * Math.PI /180) * h
   const b = Math.sqrt(h**2 - p**2)
-  return {xChange: b+10**-15, yChange: p+10**-15}
+  return {xChange: Math.round(b), yChange: Math.round(p)}
 }
