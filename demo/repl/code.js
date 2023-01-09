@@ -23,6 +23,6 @@ const getVelocity = (force, mass, appliedTime, fps) => getAcceleration(force, ma
 const dispTest = (vel, angle) =>{
   const h = vel
   const p = Math.sin(90-angle)* h
-  const b = Math.sqrt(h**2 - p**2)
+  const b = Math.sqrt(h)**2 - Math.sqrt(p)**2
   return {xChange: b, yChange: p}
 }
