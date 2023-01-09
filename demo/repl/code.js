@@ -20,4 +20,9 @@ const MAX_FIB = fib2(MAX_FIB_N);
 */
 const getAcceleration = (force, mass, appliedTime) => force/mass*appliedTime
 const getVelocity = (force, mass, appliedTime, fps) => getAcceleration(force, mass, appliedTime) * (1/fps)
-const getDisplacement = (force, mass, appliedTime, fps, angle) => Math.sin(90-angle)*getVelocity(force, mass, appliedTime, fps) / (1/fps) // use trig for coordinate displacement w/ angle
+const dispTest = (vel, angle) =>{
+  const h = vel
+  const p = Math.sin(90-angle)* h
+  const b = Math.sqrt(h**2 - p**2)
+  return {xChange: b, yChange: h}
+}
