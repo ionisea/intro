@@ -20,8 +20,8 @@ const MAX_FIB = fib2(MAX_FIB_N);
 */
 const getAcceleration = (force, mass, appliedTime) => force/mass*appliedTime
 const getVelocity = (force, mass, appliedTime, fps) => getAcceleration(force, mass, appliedTime) * (1/fps)
-const dispTest = (vel, angle) =>{
-  const h = vel
+const getDisplacement = (force, mass, appliedTime, fps, angle) =>{
+  const h = getVelocity(force, mass, appliedTime, fps) * 1/fps
   const p = Math.cos(angle * Math.PI /180) * h
   const b = Math.sqrt(h**2 - p**2)
   return {xChange: Math.round(b), yChange: Math.round(p)}
