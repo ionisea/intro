@@ -1,3 +1,4 @@
+/*
 // Warning! Do not call this function with numbers much bigger than 40 unless
 // you want to kill this tab.
 const fib = (n) => (n < 2 ? n : fib(n - 2) + fib(n - 1));
@@ -16,3 +17,7 @@ const fib2 = (n) => {
 const MAX_FIB_N = 1476;
 
 const MAX_FIB = fib2(MAX_FIB_N);
+*/
+const getAcceleration = (force, mass, appliedTime) => force/mass*appliedTime
+const getVelocity = (force, mass, appliedTime, fps) => getAcceleration(force, mass, appliedTime) * (1/fps)
+const getDisplacement = (force, mass, appliedTime, fps, angle) => Math.sin(90-angle)*getVelocity(force, mass, appliedTime, fps) / (1/fps) // use trig for coordinate displacement w/ angle
