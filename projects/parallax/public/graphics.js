@@ -2,6 +2,26 @@ let ctx;
 let width;
 let height;
 
+let onclick = (x, y) => {};
+let onkeydown = (k) => {};
+
+document.onkeydown = (e) => {
+  onkeydown(e.key)
+};
+
+const registerOnClick = (fn) => (onclick = fn);
+const registerOnKeyDown = (fn) => (onkeydown = fn);
+
+const randColor = () => {
+  const chars = '0123456789ABCDEF'
+  let color = '#'
+  for (let i = 0; i < 6; i++){
+    color += chars[Math.round(Math.random()*16 - 1)]
+  }
+  return color
+}
+// inspired from stackOverflow (https://stackoverflow.com/questions/1484506/random-color-generator)
+
 const setCanvas = (canvas) => {
   ctx = canvas.getContext('2d');
   width = canvas.width;
@@ -70,6 +90,29 @@ const drawText = (text, x, y, color, size) => {
   ctx.fillText(text, x, y);
 };
 
+const drawPolygon = (vertices, lineColor, lineWidth = 1) =>{
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = lineWidth;
+  ctx.beginPath();
+  ctx.moveTo(vertices[0].x, vertices[0].y)
+  for (const element of vertices.slice(1)){
+    ctx.lineTo(element.x, element.y)
+  }
+  ctx.lineTo(vertices[0].x, vertices[0].y)
+  ctx.stroke()
+}
+
+const drawFilledPolygon = (vertices, fillColor) =>{
+  ctx.fillStyle = fillColor;
+  ctx.beginPath();
+  ctx.moveTo(vertices[0].x, vertices[0].y)
+  for (const element of vertices.slice(1)){
+    ctx.lineTo(element.x, element.y)
+  }
+  ctx.lineTo(vertices[0].x, vertices[0].y)
+  ctx.fill()
+}
+
 const clear = () => ctx.clearRect(0, 0, width, height);
 
 /*
@@ -117,4 +160,9 @@ export {
   height,
   now,
   animate,
+  drawFilledPolygon,
+  drawPolygon,
+  registerOnClick,
+  registerOnKeyDown,
+  randColor,
 };

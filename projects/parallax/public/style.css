@@ -11,6 +11,6 @@ body {
 }
 
 canvas {
-  margin: 1in auto;
+  margin: 0.5in auto;
   border: 1px dotted grey;
 }
