@@ -1,11 +1,6 @@
-import { setCanvas, clear, width, height, animate, now, drawFilledPolygon, drawPolygon, registerOnClick, registerOnKeyDown, randColor, } from './graphics.js';
+import { setCanvas, drawFilledCircle, clear, width, height, animate, now, drawFilledPolygon, drawPolygon, registerOnClick, registerOnKeyDown, randColor, drawFilledRect, } from './graphics.js';
 const canvas = document.getElementById('screen')
 
-// y will probably not change for anything as it is quite difficult to make 3 dimensions work
-let camCoords = new point(0, 0, 0)
-let camMoveAmount = new point(0, 0, 0)
-const layerArray = []
-let pointArr = []
 
 class point {
   constructor(x, y, z) {
@@ -27,20 +22,38 @@ class layer {
   constructor(vertices, color) {
     this.vertices = vertices
     this.color = color
+    pointArr = []
   }
 
   drawLayer() {
+    const canvPos = this.vertices
     drawFilledPolygon(this.vertices, this.color)
+    drawPolygon(this.vertices, this.color)
   }
 
 }
 
+// y will probably not change for anything as it is quite difficult to make 3 dimensions work
+let camCoords = new point(0, 0, 0)
+let camMoveAmount = new point(0, 0, 0)
+const layerArray = []
+let pointArr = []
+let running = false
+
+
 registerOnClick((x, y) => {
-  pointArr
+  drawFilledCircle(x, y, 1, 'black')
+  const depth = document.getElementById('depth').value
+  const xAngleDiff = width/ (camCoords.x - x) * Math.PI
+  const yAngleDiff = height / (camCoords.y - y) * Math.PI
+  const trueX = depth * Math.tan(xAngleDiff)
+  const trueY = depth * Math.tan(yAngleDiff)
+  pointArr.push(new point(trueX, trueY, depth))
 })
 
 registerOnKeyDown((k) => {
-  if (k === 'Space') {
+  console.log(k)
+  if (k === 'Enter') {
     layerArray.push(new layer(pointArr, randColor()))
   } else if (k === 'RightArrow') {
     camMoveAmount.x += 10
@@ -48,8 +61,13 @@ registerOnKeyDown((k) => {
     camMoveAmount.x -= 10
   }
 })
+
 animate((t) => {
-  for (const element of layerArray) {
-    element.drawLayer()
+  if (running) {
+    clear()
+    // math to figure out how much to move
+    for (const element of layerArray) {
+      element.drawLayer()
+    }
   }
 });
