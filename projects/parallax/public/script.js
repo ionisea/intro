@@ -1,6 +1,27 @@
 import { setCanvas, drawFilledCircle, clear, width, height, animate, now, drawFilledPolygon, drawPolygon, registerOnClick, registerOnKeyDown, randColor, drawFilledRect, } from './graphics.js';
 const canvas = document.getElementById('screen')
 
+/* used for a physics thing ignore
+const randomizeArrayOrder = arr => {
+  const rand = []
+  while (rand.length < arr.length) {
+    const e = arr[Math.round(Math.random() * arr.length)]
+    if (rand.find(val => val === e) === undefined) {
+      rand.push(e)
+    }
+  }
+  return rand
+}
+
+console.log(randomizeArrayOrder([
+  'state fish and game comission',
+  'CICBAC',
+  'tourist board',
+  'concerned citizens',
+  'greenspeak',
+  'city air board scientists',
+]))
+*/
 
 class point {
   constructor(x, y, z) {
@@ -22,7 +43,6 @@ class layer {
   constructor(vertices, color) {
     this.vertices = vertices
     this.color = color
-    pointArr = []
   }
 
   drawLayer() {
@@ -44,10 +64,10 @@ let running = false
 registerOnClick((x, y) => {
   drawFilledCircle(x, y, 1, 'black')
   const depth = document.getElementById('depth').value
-  const xAngleDiff = width/ (camCoords.x - x) * Math.PI
+  const xAngleDiff = width / (camCoords.x - x) * Math.PI
   const yAngleDiff = height / (camCoords.y - y) * Math.PI
-  const trueX = depth * Math.tan(xAngleDiff)
-  const trueY = depth * Math.tan(yAngleDiff)
+  const trueX = camCoords.x + depth * Math.tan(xAngleDiff)
+  const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // -1 tan (trueDistFromCamcoord / depth) to reverse
   pointArr.push(new point(trueX, trueY, depth))
 })
 
