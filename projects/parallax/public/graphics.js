@@ -15,12 +15,13 @@ const registerOnKeyDown = (fn) => (onkeydown = fn);
 const randColor = () => {
   const chars = '0123456789ABCDEF'
   let color = '#'
-  for (let i = 0; i < 6; i++){
+  while (color.length < 7){
     color += chars[Math.round(Math.random()*16 - 1)]
   }
   return color
 }
 // inspired from stackOverflow (https://stackoverflow.com/questions/1484506/random-color-generator)
+// temporary, will allow color change later
 
 const setCanvas = (canvas) => {
   ctx = canvas.getContext('2d');
@@ -135,11 +136,6 @@ const animate = (drawFrame) => {
     if (running) {
       requestAnimationFrame(step);
     }
-  };
-
-  document.documentElement.onclick = (e) => {
-    running = !running;
-    maybeStep();
   };
 
   maybeStep();

@@ -7,10 +7,15 @@ html,
 body {
   height: 100%;
   width: 100%;
+  background-color: #6f6f6f;
+}
+
+label,
+input {
   text-align: center;
 }
 
-
 canvas {
   border: 1px dotted grey;
+  background-color: #5683cc;
 }
