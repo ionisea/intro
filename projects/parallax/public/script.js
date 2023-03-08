@@ -49,7 +49,7 @@ class layer {
     const canvPositions = this.vertices
     canvPositions.map((p) => {
       const angle = Math.atan2(camCoords.x - p.x, p.z)
-      p.x = angle * 1800 /Math.PI
+      p.x = angle * 1800 / Math.PI
     })
     drawFilledPolygon(canvPositions, this.color)
     drawPolygon(canvPositions, this.color, 2)
@@ -65,28 +65,32 @@ let pointArr = []
 let running = false
 
 
-document.onmousedown = (ev) => {
-  drawFilledCircle(ev.x, ev.y, 2, 'black')
-  const depth = document.getElementById('depth').value
-  const xAngleDiff = width / (camCoords.x - ev.x) * (2 / 3 * Math.PI) // 120 deg
-  //const yAngleDiff = height / (camCoords.y - ev.y) * (1/3 * Math.PI) // 60 deg, may implement later
-  const trueX = camCoords.x + depth * Math.tan(xAngleDiff) // atan(trueXDistFromCamcoord / depth) to get canvas coord
-  //const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // may use when implementing y changes
-  pointArr.push(new point(trueX, ev.y, depth))
+canvas.onclick = (ev) => {
+  if (!running) {
+    drawFilledCircle(ev.x, ev.y, 2, 'black')
+    const depth = document.getElementById('depth').value
+    const xAngleDiff = (camCoords.x - ev.x) * (2 / 30 * Math.PI) // 120 deg
+    //const yAngleDiff = height / (camCoords.y - ev.y) * (1/3 * Math.PI) // 60 deg, may implement later
+    const trueX = camCoords.x + depth * Math.tan(xAngleDiff) // atan(trueXDistFromCamcoord / depth) to get canvas coord
+    //const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // may use when implementing y changes
+    pointArr.push(new point(trueX, ev.y, depth))
+  }
 }
 
-registerOnKeyDown((k) => {
+document.onkeydown = (k) => {
   console.log(k)
-  if (k === 'Enter') {
+  if (k.key == 'Enter') {
     layerArray.push(new layer(pointArr, randColor()))
-  } else if (k === 'Space') {
+    layerArray[layerArray.length - 1].drawLayer();
+    pointArr = []
+  } else if (k.key == 'Space') {
     running = !running
-  } else if (k === 'RightArrow') {
+  } else if (k.key == 'ArrowRight') {
     camMoveAmount.x += 10
-  } else if (k === 'LeftArrow') {
+  } else if (k.key == 'ArrowLeft') {
     camMoveAmount.x -= 10
   }
-})
+}
 
 animate((t) => {
   if (running) {
