@@ -52,12 +52,12 @@ class layer {
       p.x = angle * 1800 / Math.PI
     })
     drawFilledPolygon(canvPositions, this.color)
-    drawPolygon(canvPositions, this.color, 2)
+    drawPolygon(canvPositions, 'black', 1)
   }
 
 }
 
-// y will probably not change for anything as it is quite difficult to make 3 dimensions work
+// y will probably not change for anything as it is quite difficult to make all 3 dimensions work
 let camCoords = new point(0, 0, 0)
 let camMoveAmount = new point(0, 0, 0)
 const layerArray = []
@@ -69,7 +69,7 @@ canvas.onclick = (ev) => {
   if (!running) {
     drawFilledCircle(ev.x, ev.y, 2, 'black')
     const depth = document.getElementById('depth').value
-    const xAngleDiff = (camCoords.x - ev.x) * (2 / 30 * Math.PI) // 120 deg
+    const xAngleDiff = (camCoords.x - ev.x) /1800 * Math.PI // 120 deg
     //const yAngleDiff = height / (camCoords.y - ev.y) * (1/3 * Math.PI) // 60 deg, may implement later
     const trueX = camCoords.x + depth * Math.tan(xAngleDiff) // atan(trueXDistFromCamcoord / depth) to get canvas coord
     //const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // may use when implementing y changes
