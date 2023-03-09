@@ -16,7 +16,7 @@ const randColor = () => {
   const chars = '0123456789ABCDEF'
   let color = '#'
   while (color.length < 7){
-    color += chars[Math.round(Math.random()*16 - 1)]
+    color += chars[Math.floor(Math.random()*16)]
   }
   return color
 }
