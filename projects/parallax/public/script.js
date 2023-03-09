@@ -45,8 +45,9 @@ class layer {
 
   drawLayer() {
     const canvPositions = this.vertices.map((p) => {
-      const angle = Math.atan2( p.x -camCoords.x , p.z) //camCoords.angle(p)
-      return { x: angle * 1800 / Math.PI + width/2, y: p.y, z: p.z }
+      const xAngle = Math.atan2(p.x - camCoords.x, p.z) //camCoords.angle(p)
+      const yAngle = Math.atan2(p.y - camCoords.y, p.z)
+      return { x: xAngle * 1200 / Math.PI + width / 2, y: yAngle * 600 / Math.PI + height / 2, z: p.z }
     })
     //console.log(canvPositions, 'canv pos')
     drawFilledPolygon(canvPositions, this.color)
@@ -65,11 +66,11 @@ canvas.onclick = (ev) => {
   if (!running) {
     drawFilledCircle(ev.x, ev.y, 2, 'black')
     const depth = parseInt(document.getElementById('depth').value)
-    const xAngleDiff = ( ev.x - width/2 - camCoords.x) / 1800 * Math.PI // 120 deg
-    //const yAngleDiff = height / (camCoords.y - ev.y) * (1/3 * Math.PI) // 60 deg, may implement later
+    const xAngleDiff = (ev.x - width / 2 - camCoords.x) / 1200 * Math.PI // 120 deg
+    const yAngleDiff = (ev.y - height / 2 - camCoords.y) / 600 * Math.PI // 60 deg
     const trueX = camCoords.x + depth * Math.tan(xAngleDiff) // atan(trueXDistFromCamcoord / depth) to get canvas coord
-    //const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // may use when implementing y changes
-    pointArr.push(new point(trueX, ev.y, depth))
+    const trueY = camCoords.y + depth * Math.tan(yAngleDiff) // may use when implementing y changes
+    pointArr.push(new point(trueX, trueY, depth))
   }
 }
 
@@ -87,6 +88,12 @@ document.onkeydown = (k) => {
     drawLayerArray(layerArray)
   } else if (k.key == 'ArrowLeft') {
     camCoords.x += 10
+    drawLayerArray(layerArray)
+  } else if (k.key == 'ArrowUp') {
+    camCoords.y -= 10
+    drawLayerArray(layerArray)
+  } else if (k.key == 'ArrowDown') {
+    camCoords.y += 10
     drawLayerArray(layerArray)
   }
 }
