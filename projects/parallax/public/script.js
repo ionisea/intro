@@ -48,7 +48,7 @@ class layer {
     const canvPositions = this.vertices.map((p) => {
       const angle = Math.atan2(camCoords.x - p.x, p.z) //camCoords.angle(p)
       console.log(camCoords, angle, p.x)
-      return { x: Math.round(angle * 1800 / Math.PI) + width / 2, y: p.y, z: p.z }
+      return { x: angle * 1800 / Math.PI + width/2, y: p.y, z: p.z }
     })
     console.log(canvPositions, 'canv pos')
     drawFilledPolygon(canvPositions, this.color)
@@ -67,9 +67,9 @@ canvas.onclick = (ev) => {
   if (!running) {
     drawFilledCircle(ev.x, ev.y, 2, 'black')
     const depth = parseInt(document.getElementById('depth').value)
-    const xAngleDiff = ( ev.x- camCoords.x ) / 1800 * Math.PI // 120 deg
+    const xAngleDiff = ( ev.x- camCoords.x) / 1800 * Math.PI // 120 deg
     //const yAngleDiff = height / (camCoords.y - ev.y) * (1/3 * Math.PI) // 60 deg, may implement later
-    const trueX = Math.round(camCoords.x + depth * Math.tan(xAngleDiff)) // atan(trueXDistFromCamcoord / depth) to get canvas coord
+    const trueX = camCoords.x + depth * Math.tan(xAngleDiff) // atan(trueXDistFromCamcoord / depth) to get canvas coord
     //const trueY = camCoords.x + depth * Math.tan(yAngleDiff) // may use when implementing y changes
     pointArr.push(new point(trueX, ev.y, depth))
   }
