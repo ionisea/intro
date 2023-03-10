@@ -11,9 +11,7 @@ const randomizeArrayOrder = arr => {
     }
   }
   return rand
-}
-
-*/
+}*/
 
 class point {
   constructor(x, y, z) {
@@ -27,11 +25,10 @@ class point {
   }
 }
 
-// y will probably not change for anything as it is quite difficult to make all 3 dimensions work
+
 let camCoords = new point(0, 0, 0)
 const layerArray = []
 let pointArr = []
-let running = false
 
 class layer {
   constructor(vertices, color) {
