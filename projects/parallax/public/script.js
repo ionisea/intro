@@ -1,90 +1,111 @@
-import { setCanvas, drawCircle, drawFilledCircle, clear, width, height, animate, now, drawFilledPolygon, drawPolygon, registerOnClick, registerOnKeyDown, randColor, drawFilledRect, } from './graphics.js';
-const canvas = document.getElementById('screen')
-setCanvas(canvas)
-/* used for a physics class thing ignore
-const randomizeArrayOrder = arr => {
-  const rand = []
-  while (rand.length < arr.length) {
-    const e = arr[Math.round(Math.random() * arr.length)]
-    if (rand.find(val => val === e) === undefined) {
-      rand.push(e)
-    }
-  }
-  return rand
-}*/
+import {
+  setCanvas,
+  drawCircle,
+  drawFilledCircle,
+  clear,
+  width,
+  height,
+  animate,
+  now,
+  drawFilledPolygon,
+  drawPolygon,
+  registerOnClick,
+  registerOnKeyDown,
+  randColor,
+  drawFilledRect,
+} from "./graphics.js";
 
-class point {
+const canvas = document.getElementById("screen");
+setCanvas(canvas);
+
+class Point {
   constructor(x, y, z) {
-    this.x = x
-    this.y = y
-    this.z = z
+    this.x = x;
+    this.y = y;
+    this.z = z;
   }
 
-  dist3D(point2) {
-    return Math.hypot(Math.abs(this.x - point2.x), Math.abs(this.y - point2.y), Math.abs(this.z - point2.z))
+  distance(other) {
+    return Math.hypot(this.x - other.x, this.y - other.y, this.z - other.z);
   }
 }
 
-
-let camCoords = new point(0, 0, 0)
-const layerArray = []
-let pointArr = []
-
-class layer {
+class Layer {
   constructor(vertices, color) {
-    this.vertices = vertices
-    this.color = color
+    this.vertices = vertices;
+    this.color = color;
   }
-
-  drawLayer() {
-    const canvPositions = this.vertices.map((p) => {
-      const xAngle = Math.atan2(p.x - camCoords.x, p.z - camCoords.z) //using minus for zoom in / out
-      const yAngle = Math.atan2(p.y - camCoords.y, p.z - camCoords.z)
-      return { x: xAngle * 1200 / Math.PI + width / 2, y: yAngle * 600 / Math.PI + height / 2, z: p.z }
-    })
-    drawFilledPolygon(canvPositions, this.color)
-    drawPolygon(canvPositions, 'black', 1)
+  draw(scene) {
+    const coords = scene.translate(this.vertices);
+    drawFilledPolygon(coords, this.color);
+    drawPolygon(coords, "black", 1);
   }
 }
 
-const drawLayerArray = (arr) => {
-  clear();
-  for (const element of arr) {
-    element.drawLayer()
+class Scene {
+  camera = new Point(0, 0, 0);
+  points = [];
+  layers = [];
+
+  draw() {
+    clear();
+    this.layers.forEach((l) => l.draw(this));
+  }
+
+  addPoint(x, y, depth) {
+    const xAngleDiff = ((x - width / 2 - this.camera.x) / width) * Math.PI; // assuming 10px = 1deg
+    const yAngleDiff = ((y - height / 2 - this.camera.y) / height) * Math.PI; // assuming 10px = 1deg
+    const trueX = this.camera.x + depth * Math.tan(xAngleDiff);
+    const trueY = this.camera.y + depth * Math.tan(yAngleDiff);
+    this.points.push(new Point(trueX, trueY, depth));
+  }
+
+  translate(vertices) {
+    return vertices.map((p) => {
+      const xAngle = angle(p, this.camera, "x");
+      const yAngle = angle(p, this.camera, "y");
+      return {
+        x: (xAngle * 1200) / Math.PI + width / 2,
+        y: (yAngle * 600) / Math.PI + height / 2,
+        z: p.z,
+      };
+    });
+  }
+
+  finishLayer() {
+    this.layers.push(new Layer(this.points, randColor()));
+    this.points = [];
+  }
+
+  moveCamera({ x, y }) {
+    this.camera.x += x;
+    this.camera.y += y;
   }
 }
+
+const angle = (a, b, dim) => Math.atan2(a[dim] - b[dim], a.z - b.z);
+
+const currentDepth = () => parseInt(document.getElementById("depth").value);
+
+const scene = new Scene();
+
+const directions = {
+  ArrowRight: { x: 10, y: 0 },
+  ArrowLeft: { x: -10, y: 0 },
+  ArrowUp: { x: 0, y: -10 },
+  ArrowDown: { x: 0, y: 10 },
+};
 
 canvas.onclick = (ev) => {
-  drawFilledCircle(ev.x, ev.y, 2, 'black')
-  const depth = parseInt(document.getElementById('depth').value)
-  const xAngleDiff = (ev.x - width / 2 - camCoords.x) / width * Math.PI // assuming 10px = 1deg
-  const yAngleDiff = (ev.y - height / 2 - camCoords.y) / height * Math.PI // assuming 10px = 1deg
-  const trueX = camCoords.x + depth * Math.tan(xAngleDiff)
-  const trueY = camCoords.y + depth * Math.tan(yAngleDiff)
-  pointArr.push(new point(trueX, trueY, depth))
-}
+  drawFilledCircle(ev.x, ev.y, 2, "black");
+  scene.addPoint(ev.x, ev.y, currentDepth());
+};
 
 document.onkeydown = (k) => {
-  console.log(k)
-  if (k.key == 'Enter') {
-    layerArray.push(new layer(pointArr, randColor()))
-    //console.log(layerArray)
-    drawLayerArray(layerArray)
-    pointArr = []
-  } else if (k.key == 'Space') {
-    running = !running
-  } else if (k.key == 'ArrowRight') {
-    camCoords.x += 10
-    drawLayerArray(layerArray)
-  } else if (k.key == 'ArrowLeft') {
-    camCoords.x -= 10
-    drawLayerArray(layerArray)
-  } else if (k.key == 'ArrowUp') {
-    camCoords.y -= 10
-    drawLayerArray(layerArray)
-  } else if (k.key == 'ArrowDown') {
-    camCoords.y += 10
-    drawLayerArray(layerArray)
+  if (k.key == "Enter") {
+    scene.finishLayer();
+  } else if (k.key in directions) {
+    scene.moveCamera(directions[k.key]);
   }
-}
-
+  scene.draw();
+};
