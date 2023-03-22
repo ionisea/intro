@@ -9,10 +9,6 @@ import {
   now,
   drawFilledPolygon,
   drawPolygon,
-  registerOnClick,
-  registerOnKeyDown,
-  randColor,
-  drawFilledRect,
 } from "./graphics.js";
 
 const canvas = document.getElementById("screen");
@@ -35,9 +31,9 @@ class Layer {
     this.vertices = vertices;
     this.color = color;
   }
-  
+
   draw(scene) {
-    const coords = scene.translate(this.vertices);
+    const coords = scene.display(this.vertices);
     drawFilledPolygon(coords, this.color);
     drawPolygon(coords, "black", 1);
   }
@@ -54,17 +50,17 @@ class Scene {
   }
 
   addPoint(x, y, depth) {
-    const xAngleDiff = ((x - width / 2 - this.camera.x) / width) * Math.PI; // assuming 10px = 1deg
-    const yAngleDiff = ((y - height / 2 - this.camera.y) / height) * Math.PI; // assuming 10px = 1deg
+    const xAngleDiff = ((x - this.camera.x - width / 2) / width) * Math.PI; // assuming 10px = 1deg
+    const yAngleDiff = ((y - this.camera.y - height / 2) / height) * Math.PI; // assuming 10px = 1deg
     const trueX = this.camera.x + depth * Math.tan(xAngleDiff);
     const trueY = this.camera.y + depth * Math.tan(yAngleDiff);
     this.points.push(new Point(trueX, trueY, depth));
   }
 
-  translate(vertices) {
+  display(vertices) {
     return vertices.map((p) => {
-      const xAngle = angle(p, this.camera, "x");
-      const yAngle = angle(p, this.camera, "y");
+      const xAngle = angle(this.camera, p, "x");
+      const yAngle = angle(this.camera, p, "y");
       return {
         x: (xAngle * 1200) / Math.PI + width / 2,
         y: (yAngle * 600) / Math.PI + height / 2,
@@ -74,7 +70,7 @@ class Scene {
   }
 
   finishLayer() {
-    this.layers.push(new Layer(this.points, randColor()));
+    this.layers.push(new Layer(this.points, document.getElementById('layerColor').value));
     this.points = [];
   }
 
@@ -84,7 +80,7 @@ class Scene {
   }
 }
 
-const angle = (a, b, dim) => Math.atan2(a[dim] - b[dim], a.z - b.z);
+const angle = (a, b, dim) => Math.atan2(a[dim] - b[dim], Math.abs(a.z - b.z));
 
 const currentDepth = () => parseInt(document.getElementById("depth").value);
 
