@@ -13,7 +13,7 @@ const randomizeArrayOrder = arr => {
   return rand
 }*/
 
-class point {
+class Point {
   constructor(x, y, z) {
     this.x = x
     this.y = y
@@ -21,16 +21,16 @@ class point {
   }
 
   dist3D(point2) {
-    return Math.hypot(Math.abs(this.x - point2.x), Math.abs(this.y - point2.y), Math.abs(this.z - point2.z))
+    return Math.hypot(this.x - point2.x, this.y - point2.y, this.z - point2.z)
   }
 }
 
 
-let camCoords = new point(0, 0, 0)
+let camCoords = new Point(0, 0, 0)
 const layerArray = []
 let pointArr = []
 
-class layer {
+class Layer {
   constructor(vertices, color) {
     this.vertices = vertices
     this.color = color
@@ -38,7 +38,7 @@ class layer {
 
   drawLayer() {
     const canvPositions = this.vertices.map((p) => {
-      const xAngle = Math.atan2(p.x - camCoords.x, p.z - camCoords.z) //using minus for zoom in / out
+      const xAngle = Math.atan2(p.x - camCoords.x, p.z - camCoords.z) //using minus for zoom in / out in future
       const yAngle = Math.atan2(p.y - camCoords.y, p.z - camCoords.z)
       return { x: xAngle * 1200 / Math.PI + width / 2, y: yAngle * 600 / Math.PI + height / 2, z: p.z }
     })
@@ -61,13 +61,13 @@ canvas.onclick = (ev) => {
   const yAngleDiff = (ev.y - height / 2 - camCoords.y) / height * Math.PI // assuming 10px = 1deg
   const trueX = camCoords.x + depth * Math.tan(xAngleDiff)
   const trueY = camCoords.y + depth * Math.tan(yAngleDiff)
-  pointArr.push(new point(trueX, trueY, depth))
+  pointArr.push(new Point(trueX, trueY, depth))
 }
 
 document.onkeydown = (k) => {
   console.log(k)
   if (k.key == 'Enter') {
-    layerArray.push(new layer(pointArr, randColor()))
+    layerArray.push(new Layer(pointArr, randColor())) //rand color is temporary
     //console.log(layerArray)
     drawLayerArray(layerArray)
     pointArr = []
