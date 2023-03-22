@@ -35,6 +35,7 @@ class Layer {
     this.vertices = vertices;
     this.color = color;
   }
+  
   draw(scene) {
     const coords = scene.translate(this.vertices);
     drawFilledPolygon(coords, this.color);
