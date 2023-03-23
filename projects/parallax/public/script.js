@@ -59,8 +59,8 @@ class Scene {
 
   display(vertices) {
     return vertices.map((p) => {
-      const xAngle = angle(this.camera, p, "x");
-      const yAngle = angle(this.camera, p, "y");
+      const xAngle = angle(p, this.camera, "x", 'y');
+      const yAngle = angle(p, this.camera, "y", 'x');
       return {
         x: (xAngle * 1200) / Math.PI + width / 2,
         y: (yAngle * 600) / Math.PI + height / 2,
@@ -80,7 +80,7 @@ class Scene {
   }
 }
 
-const angle = (a, b, dim) => Math.atan2(a[dim] - b[dim], Math.abs(a.z - b.z));
+const angle = (a, b, comp, nonComp) => Math.atan2(a[comp] - b[comp], Math.abs(Math.hypot(a.z - b.z, a[nonComp] - b[nonComp])));
 
 const currentDepth = () => parseInt(document.getElementById("depth").value);
 
