@@ -102,7 +102,7 @@ canvas.onclick = (ev) => {
 document.onkeydown = (k) => {
   if (k.key == "Enter") {
     scene.finishLayer();
-    scene.layers = scene.layers.sort((a,b)=>  avgArrZs(b.vertices) - avgArrZsmo(a.vertices))
+    scene.layers = scene.layers.sort((a,b)=>  avgArrZs(b.vertices) - avgArrZs(a.vertices))
   } else if (k.key in directions) {
     scene.moveCamera(directions[k.key]);
   }
