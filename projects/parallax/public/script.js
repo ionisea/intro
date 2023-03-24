@@ -13,7 +13,7 @@ import {
 
 const canvas = document.getElementById("screen");
 setCanvas(canvas);
-const avgArrZs = (arr) => arr.reduce((acc, e) => acc+e.z, 0)/arr.length
+const avgArrZs = (arr) => arr.reduce((acc, e) => acc + e.z, 0) / arr.length
 
 class Point {
   constructor(x, y, z) {
@@ -102,7 +102,7 @@ canvas.onclick = (ev) => {
 document.onkeydown = (k) => {
   if (k.key == "Enter") {
     scene.finishLayer();
-    scene.layers = scene.layers.sort((a,b)=>  avgArrZs(b.vertices) - avgArrZs(a.vertices))
+    scene.layers = scene.layers.sort((a, b) => avgArrZs(b.vertices) - avgArrZs(a.vertices))
   } else if (k.key in directions) {
     scene.moveCamera(directions[k.key]);
   }
