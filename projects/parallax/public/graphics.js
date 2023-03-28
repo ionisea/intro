@@ -2,12 +2,24 @@ let ctx;
 let width;
 let height;
 
-
 const setCanvas = (canvas) => {
   ctx = canvas.getContext('2d');
   width = canvas.width;
   height = canvas.height;
 };
+
+const drawGraph = (interval, color, lineWidth = 1) => {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = lineWidth;
+  ctx.beginPath();
+  for (let i = 0; i < 1; i += interval) {
+    ctx.moveTo(width*i, 0)
+    ctx.lineTo(width*i, height)
+    ctx.moveTo(0, height*i)
+    ctx.lineTo(width, height*i)
+  }
+  ctx.stroke()
+}
 
 const drawLine = (x1, y1, x2, y2, color, width = 1) => {
   ctx.strokeStyle = color;
@@ -54,23 +66,23 @@ const drawText = (text, x, y, color, size) => {
   ctx.fillText(text, x, y);
 };
 
-const drawPolygon = (vertices, lineColor, lineWidth = 1) =>{
+const drawPolygon = (vertices, lineColor, lineWidth = 1) => {
   ctx.strokeStyle = lineColor;
   ctx.lineWidth = lineWidth;
   ctx.beginPath();
   ctx.moveTo(vertices[0].x, vertices[0].y)
-  for (const element of vertices.slice(1)){
+  for (const element of vertices.slice(1)) {
     ctx.lineTo(element.x, element.y)
   }
   ctx.lineTo(vertices[0].x, vertices[0].y)
   ctx.stroke()
 }
 
-const drawFilledPolygon = (vertices, fillColor) =>{
+const drawFilledPolygon = (vertices, fillColor) => {
   ctx.fillStyle = fillColor;
   ctx.beginPath();
   ctx.moveTo(vertices[0].x, vertices[0].y)
-  for (const element of vertices.slice(1)){
+  for (const element of vertices.slice(1)) {
     ctx.lineTo(element.x, element.y)
   }
   ctx.lineTo(vertices[0].x, vertices[0].y)
@@ -119,4 +131,5 @@ export {
   animate,
   drawFilledPolygon,
   drawPolygon,
+  drawGraph,
 };

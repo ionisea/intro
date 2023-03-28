@@ -9,12 +9,21 @@ import {
   now,
   drawFilledPolygon,
   drawPolygon,
+  drawGraph,
 } from "./graphics.js";
 
 const canvas = document.getElementById("screen");
 setCanvas(canvas);
+
 const avgArrZs = (arr) => arr.reduce((acc, e) => acc + e.z, 0) / arr.length
 
+const clusterTest = (extent) => {
+  for(let i = 0; i < extent; i++){
+   for(let o = 0; o<4; o++){
+     scene.addPoint()
+  }
+}
+}
 class Point {
   constructor(x, y, z) {
     this.x = x;
@@ -47,6 +56,7 @@ class Scene {
 
   draw() {
     clear();
+    //drawGraph(0.02, 'black', 1)
     this.layers.forEach((l) => l.draw(this));
   }
 
