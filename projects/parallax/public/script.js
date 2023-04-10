@@ -17,13 +17,6 @@ setCanvas(canvas);
 
 const avgArrZs = (arr) => arr.reduce((acc, e) => acc + e.z, 0) / arr.length
 
-const clusterTest = (extent) => {
-  for(let i = 0; i < extent; i++){
-   for(let o = 0; o<4; o++){
-     scene.addPoint()
-  }
-}
-}
 class Point {
   constructor(x, y, z) {
     this.x = x;
@@ -63,8 +56,8 @@ class Scene {
   addPoint(x, y, depth) {
     const xAngleDiff = ((x - this.camera.x - width / 2) / width) * Math.PI; // assuming 10px = 1deg
     const yAngleDiff = ((y - this.camera.y - height / 2) / height) * Math.PI; // assuming 10px = 1deg
-    const trueX = this.camera.x + depth * Math.tan(xAngleDiff);
-    const trueY = this.camera.y + depth * Math.tan(yAngleDiff);
+    const trueX = /*this.camera.x +*/ depth * Math.tan(xAngleDiff);
+    const trueY = /*this.camera.y + */depth * Math.tan(yAngleDiff);
     this.points.push(new Point(trueX, trueY, depth));
   }
 
@@ -73,8 +66,8 @@ class Scene {
       const xAngle = angle(p, this.camera, "x", 'y');
       const yAngle = angle(p, this.camera, "y", 'x');
       return {
-        x: (xAngle * 1200) / Math.PI + width / 2,
-        y: (yAngle * 600) / Math.PI + height / 2,
+        x: (xAngle / Math.PI) * width + width / 2,
+        y: (yAngle / Math.PI) * height + height / 2,
         z: p.z,
       };
     });
