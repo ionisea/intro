@@ -53,3 +53,9 @@ const sumNested = (nest) => {
     return x
   }
 }
+
+const searchNested = (nest, n) => {
+  if (isNumber(nest)){
+    return nest === number
+  } else 
+}
