@@ -1,6 +1,6 @@
 const product = (arr) => {
-  if (arr.length === 0){
-  return 1
+  if (arr.length === 0) {
+    return 1
   } else {
     return arr[0] * product(arr.slice(1))
   }
@@ -10,7 +10,7 @@ const sumSquares = (n) => {
   if (n === 0) {
     return 0
   } else {
-    return n**2 + sumSquares(n-1)
+    return n ** 2 + sumSquares(n - 1)
   }
 }
 
@@ -20,14 +20,14 @@ const lucas = (n) => {
   } else if (n === 1) {
     return 1;
   } else {
-    return lucas(n-1) + lucas(n-2)
+    return lucas(n - 1) + lucas(n - 2)
   }
 }
 
 const isAscending = (arr) => {
-  if (arr.length === 0){
+  if (arr.length === 0) {
     return true
-  } else if (arr[0] > arr[1]){
+  } else if (arr[0] > arr[1]) {
     return false
   } else {
     return isAscending(arr.slice(1))
@@ -35,9 +35,9 @@ const isAscending = (arr) => {
 }
 
 const isDescending = (arr) => {
-  if (arr.length === 0){
+  if (arr.length === 0) {
     return true
-  } else if (arr[0] < arr[1]){
+  } else if (arr[0] < arr[1]) {
     return false
   } else {
     return isDescending(arr.slice(1))
@@ -45,18 +45,20 @@ const isDescending = (arr) => {
 }
 
 const sumNested = (nest) => {
-  if (isNumber(nest)){
+  if (isNumber(nest)) {
     return nest;
   } else {
     let x = 0
-    for (const element of nest) x+= sumNested(element) // semi-recursive, will do it right later
+    for (const element of nest) x += sumNested(element) // semi-recursive, will do it right later
     return x
   }
 }
 
 const searchNested = (nest, n) => {
-  if (isNumber(nest)){
+  if (isNumber(nest)) {
     return nest === n
+  } else if (nest.length === 0) {
+    return false
   } else {
     console.log(nest, n)
     return searchNested(nest[0], n) || searchNested(nest.slice(1), n)
