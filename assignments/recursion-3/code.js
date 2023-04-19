@@ -43,3 +43,13 @@ const isDescending = (arr) => {
     return isDescending(arr.slice(1))
   }
 }
+
+const sumNested = (nest) => {
+  if (isNumber(nest)){
+    return nest;
+  } else {
+    let x = 0
+    for (const element of nest) x+= sumNested(element)
+    return x
+  }
+}
