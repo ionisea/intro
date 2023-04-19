@@ -57,5 +57,7 @@ const sumNested = (nest) => {
 const searchNested = (nest, n) => {
   if (isNumber(nest)){
     return nest === number
-  } else 
+  } else {
+    
+  }
 }
