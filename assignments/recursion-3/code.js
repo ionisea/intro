@@ -49,7 +49,7 @@ const sumNested = (nest) => {
     return nest;
   } else {
     let x = 0
-    for (const element of nest) x+= sumNested(element)
+    for (const element of nest) x+= sumNested(element) // semi-recursive, will do it right later
     return x
   }
 }
@@ -58,6 +58,7 @@ const searchNested = (nest, n) => {
   if (isNumber(nest)){
     return nest === n
   } else {
+    console.log(nest, n)
     return searchNested(nest[0], n) || searchNested(nest.slice(1), n)
   }
 }
