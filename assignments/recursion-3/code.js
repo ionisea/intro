@@ -60,7 +60,6 @@ const searchNested = (nest, n) => {
   } else if (nest.length === 0) {
     return false
   } else {
-    console.log(nest, n)
     return searchNested(nest[0], n) || searchNested(nest.slice(1), n)
   }
 }
