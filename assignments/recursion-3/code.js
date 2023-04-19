@@ -58,6 +58,10 @@ const searchNested = (nest, n) => {
   if (isNumber(nest)){
     return nest === number
   } else {
-    
+    for (const element of nest){
+      if (searchNested(element)){
+        return true
+      }
+    }
   }
 }
