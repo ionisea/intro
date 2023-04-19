@@ -56,7 +56,7 @@ const sumNested = (nest) => {
 
 const searchNested = (nest, n) => {
   if (isNumber(nest)){
-    return typeof nest === 'number'
+    return nest === n
   } else {
     for (const element of nest){
       if (searchNested(element)){
