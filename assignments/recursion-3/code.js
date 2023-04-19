@@ -7,8 +7,8 @@ const product = (arr) => {
 }
 
 const sumSquares = n => {
-  if (n === 0) {
-    return 0
+  if (n === 1) {
+    return 1
   } else {
     return n*sumSquares(n-1)
   }
