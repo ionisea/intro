@@ -6,10 +6,10 @@ const product = (arr) => {
   }
 }
 
-const sumSquares = n => {
-  if (n === 1) {
-    return 1
+const sumSquares = (n) => {
+  if (n === 0) {
+    return 0
   } else {
-    return n*sumSquares(n-1)
+    return 2*sumSquares(n-1)
   }
 }
