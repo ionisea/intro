@@ -57,7 +57,9 @@ const sumNested = (nest) => {
 const sumNested = (nest, n) => {
   if (isNumber(nest)) {
     return nest
-  } else {
+  } else if (nest.length === 0) {
+    return false
+  }else {
     return sumNested(nest[0], n) + sumNested(nest.slice(1), n)
   }
 }
