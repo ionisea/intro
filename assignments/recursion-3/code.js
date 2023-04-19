@@ -33,3 +33,13 @@ const isAscending = (arr) => {
     return isAscending(arr.slice(1))
   }
 }
+
+const isDescending = (arr) => {
+  if (arr.length === 0){
+    return true
+  } else if (arr[0] < arr[1]){
+    return false
+  } else {
+    return isDescending(arr.slice(1))
+  }
+}
