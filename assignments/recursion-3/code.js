@@ -43,7 +43,7 @@ const isDescending = (arr) => {
     return isDescending(arr.slice(1))
   }
 }
-
+/*
 const sumNested = (nest) => {
   if (isNumber(nest)) {
     return nest;
@@ -52,7 +52,7 @@ const sumNested = (nest) => {
     for (const element of nest) x += sumNested(element) // semi-recursive, will do it right later
     return x
   }
-}
+}*/
 
 const sumNested = (nest, n) => {
   if (isNumber(nest)) {
