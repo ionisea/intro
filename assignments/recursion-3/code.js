@@ -50,7 +50,7 @@ const sumNested = (nest) => {
   } else if (nest.length === 0) {
     return 0;
   } else {
-    return sumNested(nest[0], n) + sumNested(nest.slice(1), n)
+    return sumNested(nest[0]) + sumNested(nest.slice(1))
   }
 }
 
