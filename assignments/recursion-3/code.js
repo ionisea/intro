@@ -44,7 +44,7 @@ const isDescending = (arr) => {
   }
 }
 
-const sumNested = (nest, n) => {
+const sumNested = (nest) => {
   if (isNumber(nest)) {
     return nest
   } else if (nest.length === 0) {
