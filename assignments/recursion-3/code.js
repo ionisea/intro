@@ -63,3 +63,5 @@ const searchNested = (nest, n) => {
     return searchNested(nest[0], n) || searchNested(nest.slice(1), n)
   }
 }
+
+const evaluate
