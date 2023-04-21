@@ -66,5 +66,5 @@ const searchNested = (nest, n) => {
 
 const evaluate = (exp) => {
   if (isNumber(exp)) return exp
-  else return eval(evaluate(exp.left) + exp.op + evaluate(exp.right))
+  else return Function('return ' + evaluate(exp.left) + exp.op + evaluate(exp.right))
 }
