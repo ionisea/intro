@@ -64,4 +64,4 @@ const searchNested = (nest, n) => {
   }
 }
 
-const evaluate = (exp) => isNumber(exp) ? exp : Function('"Use strict mode!";'+ 'return ' + evaluate(exp.left) + exp.op + evaluate(exp.right))();
+const evaluate = (exp) => isNumber(exp) ? exp : Function('"use strict";'+ 'return ' + evaluate(exp.left) + exp.op + evaluate(exp.right))();
