@@ -23,8 +23,7 @@ const reCenter = (mult, newCenter) => {
 };
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' 'a mod (or things like it) b'
-    if (x != undefined) let mutedEq = eq.replaceAll('x', x)
-
+    if (x != undefined) evaluate(eq.replaceAll('x', x))
     if (eq.indexOf('(') === -1) {
         //go into deeper level evaluation, could just use eval func for some of this i suppose
     } else {
