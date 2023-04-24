@@ -1,5 +1,14 @@
 import { setCanvas, drawCircle, width, height } from './graphics.js';
+setCanvas(document.getElementById('screen'))
 
-setCanvas(document.getElementById('screen'));
+const input = document.getElementById('eq')
 
-drawCircle(width / 2, height / 2, 100, 'black');
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    };
+};
+
+let bl = new Point(0,0) //bottom left coord
+let scale = 0.2 //px per unit

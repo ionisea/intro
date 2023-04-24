@@ -10,7 +10,10 @@ body {
   text-align: center;
 }
 
+input {
+  margin: 0.5in auto
+}
+
 canvas {
-  margin: 1in auto;
-  border: 1px dotted grey;
+  border: 1px dashed grey;
 }
