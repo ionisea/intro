@@ -22,7 +22,7 @@ const reCenter = (mult, newCenter) => {
     scale *= mult;
 };
 
-const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' 'a mod (or things like it) b'
+const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b'
     if (x != undefined) evaluate(eq.replaceAll('x', `(${x})`))
     if (eq.indexOf('(') === -1) {
         //go into deeper level evaluation, could just use eval func for some of this i suppose
@@ -33,5 +33,5 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 
 const graph = (eq, x) =>{
     const accumulate = []
-   // for (let x = (center-width/2); x < )
+ //   for (let x = (center-width/2 * (1/scale) ); x < width/2 * (1/scale); x+=)
 }
