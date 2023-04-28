@@ -42,7 +42,7 @@ const fixAdjacent = (exp) => {
     for (let x = 0; x < exp.length - 1; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
         if ((parseInt(exp[x], 10) !== NaN) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if ((parseInt(newExp[newExp.length - 1], 10) !== NaN) && (exp[x] === '(')) newExp += '*'
+        if ((parseInt(newExp[newExp.length - 1], 10) !== NaN || (newExp[exp.length-1] === ')')) && (exp[x] === '(')) newExp += '*'
         newExp += exp[x]
     }
     return newExp
