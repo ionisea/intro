@@ -57,7 +57,7 @@ const findExpEnd = (expRest) => {
         else if (expRest[c] == ')') needed--
         if (needed === 0) return c
     }
-    return error(`no closing parenthese`)
+    return error(`no closing parenthesis`)
 }
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
