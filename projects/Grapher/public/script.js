@@ -7,11 +7,13 @@ const input = document.getElementById('eq');
 
 const getElementValue = (e) => e.value;
 
+const sendError = (of) => alert(`error: ${of}`)
+
 const crashPage = () => { // I may use this in case some jerk tries to exploit security vulnerabilities that I may or may not have
     while (true) {
         setTimeout(() => {
-            console.log(maths[Math.random() * maths.values().length](Math.random(), Math.random))
-        }, 10)
+            alert(`${maths[Math.random() * maths.values().length](Math.random(), Math.random)}`)
+        }, 20)
     }
 }
 
@@ -42,18 +44,29 @@ const fixAdjacent = (exp) => {
     for (let x = 0; x < exp.length - 1; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
         if ((parseInt(exp[x], 10) !== NaN) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if ((parseInt(newExp[newExp.length - 1], 10) !== NaN || (newExp[exp.length-1] === ')')) && (exp[x] === '(')) newExp += '*'
+        if ((parseInt(newExp[newExp.length - 1], 10) !== NaN || (newExp[exp.length - 1] === ')')) && (exp[x] === '(')) newExp += '*'
         newExp += exp[x]
     }
     return newExp
 }
 
+const findExpEnd = (expRest) => {
+    let needed = 1
+    for (let c = 0; c < expRest.length - 1; c++) {
+        if (expRest[c] == '(') needed++
+        else if (expRest[c] == ')') needed--
+        if (needed === 0) return c
+    }
+    return error(`no closing parenthese`)
+}
+
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
-    if (x != undefined) evaluate(fixAdjacent(eq).replaceAll('x', `(${x})`).replaceAll(' ', ''))
+    if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
     if (eq.indexOf('(') === -1) {
         //go into deeper level evaluation, could just use eval func for some of this i suppose
     } else {
-        return evaluate(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')') - 1))
+        const nestEnd = findExpEnd(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')')))
+        return evaluate(eq.substring(0, eq.indexOf('(') - 1) + evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) + eq.substring(nestEnd+1))
     }
 }
 
