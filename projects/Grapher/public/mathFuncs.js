@@ -27,9 +27,7 @@ const maths = {
         }
         return result;
     },
-    random: (low, high) => Math.random() * Math.abs(high - low) + low, // abs just in case some idiot does it the wrong way
-    
-
+    random: (low, high) => Math.random() * (high - low) + low,
 }
 
 export {

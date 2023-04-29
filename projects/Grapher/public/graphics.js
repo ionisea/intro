@@ -2,6 +2,15 @@ let ctx;
 let width;
 let height;
 
+const displayGraph = (arr) => {
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(arr[0])
+  arr.slice(1).forEach(e => ctx.lineTo(e.x, e.y))
+  ctx.stroke();
+}
+
 const setCanvas = (canvas) => {
   ctx = canvas.getContext('2d');
   width = canvas.width;
@@ -85,4 +94,5 @@ export {
   clear,
   width,
   height,
+  displayGraph,
 };

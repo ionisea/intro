@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width,initial-scale=1" name="viewport">
-  <title>Simple draw</title>
+  <title>Grapher</title>
   <link href="style.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="https://img.icons8.com/pastel-glyph/64/null/graph--v1.png" />
   <script src="script.js" type="module"></script>
 </head>
+
 <body>
-  <input id="eq" type="text" value="y=">
+  <input id="eq" type="text" value="y=" />
+  <label id="resoLabel" for="resolution">resolution (px between points):</label>
+  <input id="resolution" type="range" value="5" min="1" max="20" />
   <br>
-  <canvas id="screen" width="1000" height="650"></canvas>
+  <canvas id="screen" width="1000" height="600"></canvas>
 </body>
+
 </html>

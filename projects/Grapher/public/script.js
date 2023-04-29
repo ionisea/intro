@@ -1,4 +1,4 @@
-import { setCanvas, drawCircle, width, height } from './graphics.js';
+import { setCanvas, width, height, displayGraph } from './graphics.js';
 import { maths } from './mathFuncs.js';
 
 setCanvas(document.getElementById('screen'))
@@ -57,27 +57,55 @@ const findExpEnd = (expRest) => {
         else if (expRest[c] == ')') needed--
         if (needed === 0) return c
     }
-    return error(`no closing parenthesis`)
+    return sendError(`no closing parenthesis`)
 }
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
     if (eq.indexOf('(') === -1) {
-        //go into deeper level evaluation, could just use eval func for some of this i suppose
+        if ((eq.indexOf('^') === -1) && (eq.indexOf('**') === -1) && (eq.indexOf('root') === -1)) {
+            if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1) && eq.indexOf('!' === -1)) {
+                if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
+                    if ((eq.indexOf('+') === -1) && (eq.indexOf('-') === -1)) {
+                        if (typeof eq === 'number') return eq;
+                        else return sendError(`well crap something went wrong (you may have caused it)`)
+                    } else {
+
+                    };
+                } else {
+
+                }
+            } else {
+
+            };
+        } else {
+
+        };
     } else {
-        // figure out trig functions as well or else it may end up funky with the cos6^2 and the computer will crap itself
+        // figure out trig functions or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
         const nestEnd = findExpEnd(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')')))
-        return evaluate(eq.substring(0, eq.indexOf('(') - 1) + evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) + eq.substring(nestEnd+1))
-    }
-}
+        return evaluate(eq.substring(0, eq.indexOf('(') - 1) +
+            evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) +
+            eq.substring(nestEnd + 1));
+    };
+};
 
 canvas.onclick = (ev) => {
-    reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x, ev.y))
-}
+    reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x, ev.y));
+    graph(getElementValue(input));
+};
 
-const graph = (eq, x) => {
-    const accumulate = []
+document.onkeydown = (k) => {
+    if (k.key === 'Enter') {
+        graph(getElementValue(input));
+    };
+};
+
+const graph = (eq) => {
+    const points = []
     for (let x = 0; x < width; x += resolution) {
-
-    }
-}
+        const trueX = x / scale + getCanvBL(center);
+        points.push(new Point(trueX, evaluate(eq.slice(eq.indexOf('=') + 1), trueX)));
+    };
+    displayGraph(points.map(p => (p - getCanvBL(center)) * scale));
+};

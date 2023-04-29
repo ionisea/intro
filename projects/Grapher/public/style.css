@@ -10,8 +10,13 @@ body {
   text-align: center;
 }
 
+resolution {
+  padding: 20px;
+}
+
 input {
-  margin: 0.5in auto
+  margin: 0.25in auto;
+  font-size: 15px;
 }
 
 canvas {
