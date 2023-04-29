@@ -65,6 +65,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
     if (eq.indexOf('(') === -1) {
         //go into deeper level evaluation, could just use eval func for some of this i suppose
     } else {
+        // figure out trig functions as well or else it may end up funky with the cos6^2 and the computer will crap itself
         const nestEnd = findExpEnd(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')')))
         return evaluate(eq.substring(0, eq.indexOf('(') - 1) + evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) + eq.substring(nestEnd+1))
     }
