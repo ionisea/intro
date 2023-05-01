@@ -43,8 +43,8 @@ const fixAdjacent = (exp) => {
     let newExp = ''
     for (let x = 0; x < exp.length - 1; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
-        if ((parseInt(exp[x], 10) !== NaN) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if ((parseInt(newExp[newExp.length - 1], 10) !== NaN || (newExp[exp.length - 1] === ')')) && (exp[x] === '(')) newExp += '*'
+        if ((typeof exp[x] === 'number') && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
+        if (((typeof newExp[newExp.length - 1] === 'number') || (newExp[exp.length - 1] === ')')) && (exp[x] === '(')) newExp += '*'
         newExp += exp[x]
     }
     return newExp
@@ -68,7 +68,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
                 if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
                     if ((eq.indexOf('+') === -1) && (eq.indexOf('-') === -1)) {
                         if (typeof eq === 'number') return eq;
-                        else return sendError(`well crap something went wrong (you may have caused it)`)
+                        else return sendError(`something went wrong (you may have caused it)`)
                     } else {
 
                     };
@@ -82,7 +82,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 
         };
     } else {
-        // figure out trig functions or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
+        // figure out trig functions here, maybe abs, or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
         const nestEnd = findExpEnd(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')')))
         return evaluate(eq.substring(0, eq.indexOf('(') - 1) +
             evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) +
