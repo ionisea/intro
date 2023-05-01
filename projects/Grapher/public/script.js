@@ -41,10 +41,10 @@ const reCenter = (mult, newCenter) => { //for later zoom in/out
 
 const fixAdjacent = (exp) => {
     let newExp = ''
-    for (let x = 0; x < exp.length - 1; x++) {
+    for (let x = 0; x < exp.length; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
         if ((typeof exp[x] === 'number') && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if (((typeof newExp[newExp.length - 1] === 'number') || (newExp[exp.length - 1] === ')')) && (exp[x] === '(')) newExp += '*'
+        if (((typeof newExp[newExp.length - 1] === 'number') && ((newExp[exp.length - 1] === ')')) || (exp[x] === '('))) newExp += '*'
         newExp += exp[x]
     }
     return newExp
