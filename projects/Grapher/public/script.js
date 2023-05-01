@@ -105,7 +105,7 @@ const graph = (eq) => {
     const points = []
     for (let x = 0; x < width; x += resolution) {
         const trueX = x / scale + getCanvBL(center);
-        points.push(new Point(trueX, evaluate(eq.slice(eq.indexOf('=') + 1), trueX)));
+        points.push(new Point(trueX, evaluate(eq, trueX)));
     };
     displayGraph(points.map(p => (p - getCanvBL(center)) * scale));
 };
