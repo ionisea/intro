@@ -50,7 +50,7 @@ const fixAdjacent = (exp) => {
     return newExp
 }
 
-const findExpEnd = (expRest) => {
+const findExpEnd = (expRest, firstObj) => {
     let needed = 1
     for (let c = 0; c < expRest.length - 1; c++) {
         if (expRest[c] == '(') needed++
@@ -60,9 +60,18 @@ const findExpEnd = (expRest) => {
     return sendError(`no closing parenthesis`)
 }
 
+const checkFirstOp = (exp, ops) => {
+    let first = {op: undefined, index: Infinity};
+    for (const op of ops) {
+        const index = exp.indexOf(op)
+        if (index >= 0 && index< first.index) first = {op, index};
+    }
+    return first;
+}
+
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
-    if (eq.indexOf('(') === -1) {
+    if ((eq.indexOf('(') === -1) && (eq.indexOf('|') === -1)) {
         if ((eq.indexOf('^') === -1) && (eq.indexOf('**') === -1) && (eq.indexOf('root') === -1)) {
             if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1) && eq.indexOf('!' === -1)) {
                 if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
@@ -83,9 +92,10 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
         };
     } else {
         // figure out trig functions here, maybe abs, or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
-        const nestEnd = findExpEnd(eq.substring(eq.indexOf('(') + 1, eq.indexOf(')')))
-        return evaluate(eq.substring(0, eq.indexOf('(') - 1) +
-            evaluate(eq.substring(eq.indexOf('(') + 1, nestEnd)) +
+        const which = checkFirstOp(eq, ['|', '('])
+        const nestEnd = findExpEnd(eq.substring(which.index + 1, which))
+        return evaluate(eq.substring(0, which.index - 1) +
+            evaluate(eq.substring(which.index + 1, nestEnd)) +
             eq.substring(nestEnd + 1));
     };
 };
