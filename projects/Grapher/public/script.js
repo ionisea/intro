@@ -78,6 +78,7 @@ const findOperated = (exp, opObj) => {
             range.close = opObj.index + opObj.op.length + x
         }
     }
+    return range;
 }
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
