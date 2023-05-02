@@ -74,7 +74,7 @@ const findOperated = (exp, opObj) => {
     for (let x = 1; x < exp.length; x++) {
         if ((range.open === undefined) && (parseInt(typeof exp[opObj.index - x]) !== 'number')) {
             range.open = opObj.index - x
-        } else if ((range.close === undefined) && (parseInt(typeof exp[opObj.index + opObj.op.length + x]) !== 'number')) {
+        } if ((range.close === undefined) && (parseInt(typeof exp[opObj.index + opObj.op.length + x]) !== 'number')) {
             range.close = opObj.index + opObj.op.length + x
         }
     }
@@ -100,7 +100,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 
             };
         } else {
-            const first = checkFirstOp(eq, ['^', '**', 'root'])
+            const searchRange = findOperated(eq, checkFirstOp(eq, ['^', '**', 'root']))
 
         };
     } else {
