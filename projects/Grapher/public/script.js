@@ -50,23 +50,34 @@ const fixAdjacent = (exp) => {
     return newExp
 }
 
-const findExpEnd = (expRest, firstObj) => {
-    let needed = 1
+const findExpEnd = (expRest, opObj) => {
+    let needed = { num: 1, open: opObj.op, close: opObj.op === '(' ? ')' : '|' }
     for (let c = 0; c < expRest.length - 1; c++) {
-        if (expRest[c] == '(') needed++
-        else if (expRest[c] == ')') needed--
-        if (needed === 0) return c
+        if ((needed.open !== needed.close) && (expRest[c] == '(')) needed.num++
+        else if (expRest[c] == opObj.close) needed.num--
+        if (needed.num === 0) return c
     }
-    return sendError(`no closing parenthesis`)
+    return sendError(`no closing parenthesis / abs marker`)
 }
 
 const checkFirstOp = (exp, ops) => {
-    let first = {op: undefined, index: Infinity};
+    let first = { op: undefined, index: Infinity };
     for (const op of ops) {
         const index = exp.indexOf(op)
-        if (index >= 0 && index< first.index) first = {op, index};
+        if (index >= 0 && index < first.index) first = { op, index };
     }
     return first;
+}
+
+const findOperated = (exp, opObj) => {
+    let range = { open: undefined, close: undefined }
+    for (let x = 1; x < exp.length; x++) {
+        if ((range.open === undefined) && (parseInt(typeof exp[opObj.index - x]) !== 'number')) {
+            range.open = opObj.index - x
+        } else if ((range.close === undefined) && (parseInt(typeof exp[opObj.index + opObj.op.length + x]) !== 'number')) {
+            range.close = opObj.index + opObj.op.length + x
+        }
+    }
 }
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
@@ -76,26 +87,28 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
             if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1) && eq.indexOf('!' === -1)) {
                 if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
                     if ((eq.indexOf('+') === -1) && (eq.indexOf('-') === -1)) {
-                        if (typeof eq === 'number') return eq;
+                        if (typeof eq === 'number') return parseInt(eq);
                         else return sendError(`something went wrong (you may have caused it)`)
                     } else {
 
                     };
                 } else {
 
-                }
+                };
             } else {
 
             };
         } else {
+            const first = checkFirstOp(eq, ['^', '**', 'root'])
 
         };
     } else {
         // figure out trig functions here, maybe abs, or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
-        const which = checkFirstOp(eq, ['|', '('])
-        const nestEnd = findExpEnd(eq.substring(which.index + 1, which))
-        return evaluate(eq.substring(0, which.index - 1) +
-            evaluate(eq.substring(which.index + 1, nestEnd)) +
+        const first = checkFirstOp(eq, ['|', '('])
+        const nestEnd = findExpEnd(eq.substring(first.index + 1, first))
+        return evaluate(eq.substring(0, first.index - 1) +
+            (first.op === '|' ? maths[abs](evaluate(eq.substring(first.index + 1, nestEnd))) :
+                evaluate(eq.substring(first.index + 1, nestEnd))) +
             eq.substring(nestEnd + 1));
     };
 };
