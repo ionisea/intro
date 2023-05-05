@@ -29,8 +29,8 @@ class Point {
     }
 };
 
-let center = new Point(width / 10, height / 10); //center coord
-let scale = 5; //px per unit
+let center = new Point(width / 2, height / 2); //center coord
+let scale = 1; //px per unit
 let resolution = 1; //px between points
 
 const getCanvBL = (ctr) => new Point(ctr - width / 2 / scale, ctr - height / 2 / scale)
