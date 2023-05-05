@@ -11,11 +11,10 @@ const sendError = (of) => alert(`error: ${of}`)
 
 const disablePage = () => { // I may use this in case some jerk tries to exploit security vulnerabilities that I may or may not add
     const mathsVals = Object.values(maths)
-        setInterval(() => {
-            alert(`${mathsVals[Math.floor(Math.random() * mathsVals.length)](Math.random(), Math.random())}`)
-        }, 20)
+    setInterval(() => {
+        alert(`${mathsVals[Math.floor(Math.random() * mathsVals.length)](Math.random(), Math.random())}`)
+    }, 20)
 }
-
 
 class Point {
     constructor(x, y) {
@@ -60,7 +59,7 @@ const findExpEnd = (expRest, opObj) => {
     return sendError(`no closing parenthesis / abs marker`)
 }
 
-const checkFirstOp = (exp, ops) => {
+const findFirstOp = (exp, ops) => {
     let first = { op: undefined, index: Infinity };
     for (const op of ops) {
         const index = exp.indexOf(op)
@@ -97,15 +96,16 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 
                 };
             } else {
-
+ 
             };
         } else {
-            const searchRange = findOperated(eq, checkFirstOp(eq, ['^', '**', 'root']))
-            
+            const opStart = findFirstOp(eq, ['^', '**', 'root'])
+            const oppedRange = findOperated(eq, opStart)
+
         };
     } else {
         // figure out trig functions here, maybe abs, or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
-        const first = checkFirstOp(eq, ['|', '('])
+        const first = findFirstOp(eq, ['|', '('])
         const nestEnd = findExpEnd(eq.substring(first.index + 1, first))
         return evaluate(eq.substring(0, first.index - 1) +
             (first.op === '|' ? maths[abs](evaluate(eq.substring(first.index + 1, nestEnd))) :
@@ -115,7 +115,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 };
 
 canvas.onclick = (ev) => {
-    reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x, ev.y));
+    reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x / scale + getCanvBL(center).x, ev.y / scale + getCanvBL(center).y));
     graph(getElementValue(input));
 };
 

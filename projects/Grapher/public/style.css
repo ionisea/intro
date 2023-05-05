@@ -10,12 +10,9 @@ body {
   text-align: center;
 }
 
-resolution {
-  padding: 20px;
-}
 
-input {
-  margin: 0.25in auto;
+div {
+  padding-top: 0.1in;
   font-size: 15px;
 }
 

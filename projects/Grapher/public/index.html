@@ -11,10 +11,14 @@
 </head>
 
 <body>
-  <label for="resolution">y=</label>
-  <input id="eq" type="text" value="" />
-  <label id="resoLabel" for="resolution">resolution (px between points):</label>
-  <input id="resolution" type="range" value="5" min="1" max="20" />
+  <div id="equation">
+    <label for="eq">y=</label>
+    <input id="eq" type="text" value="" />
+  </div>
+  <div id="reso">
+    <label for="resolution">resolution (px between points):</label>
+    <input id="resolution" type="range" value="5" min="1" max="20" />
+  </div>
   <br>
   <canvas id="screen" width="1000" height="600"></canvas>
 </body>
