@@ -28,6 +28,7 @@ const maths = {
         return result;
     },
     random: (low, high) => Math.random() * (high - low) + low,
+    randomInt: (low, high) => Math.round(Math.random() * (high - low) + low),
 }
 
 export {

@@ -9,13 +9,13 @@ const getElementValue = (e) => e.value;
 
 const sendError = (of) => alert(`error: ${of}`)
 
-const crashPage = () => { // I may use this in case some jerk tries to exploit security vulnerabilities that I may or may not have
-    while (true) {
-        setTimeout(() => {
-            alert(`${maths[Math.random() * maths.values().length](Math.random(), Math.random)}`)
+const disablePage = () => { // I may use this in case some jerk tries to exploit security vulnerabilities that I may or may not add
+    const mathsVals = Object.values(maths)
+        setInterval(() => {
+            alert(`${mathsVals[Math.floor(Math.random() * mathsVals.length)](Math.random(), Math.random())}`)
         }, 20)
-    }
 }
+
 
 class Point {
     constructor(x, y) {
@@ -101,7 +101,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
             };
         } else {
             const searchRange = findOperated(eq, checkFirstOp(eq, ['^', '**', 'root']))
-
+            
         };
     } else {
         // figure out trig functions here, maybe abs, or else it may end up funky with the cosa^b and whatnot and the computer will crap itself
