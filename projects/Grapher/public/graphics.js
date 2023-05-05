@@ -6,7 +6,7 @@ const displayGraph = (arr) => {
   ctx.strokeStyle = 'black';
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(arr[0])
+  ctx.moveTo(arr[0].x, arr[0].y)
   arr.slice(1).forEach(e => ctx.lineTo(e.x, e.y))
   ctx.stroke();
 }

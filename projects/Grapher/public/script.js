@@ -3,7 +3,9 @@ import { maths } from './mathFuncs.js';
 
 setCanvas(document.getElementById('screen'))
 const canvas = document.getElementById('screen')
-const input = document.getElementById('eq');
+const eqInput = document.getElementById('eq');
+const resoSlider = document.getElementById('resolution')
+
 
 const getElementValue = (e) => e.value;
 
@@ -87,7 +89,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
             if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1) && eq.indexOf('!' === -1)) {
                 if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
                     if ((eq.indexOf('+') === -1) && (eq.indexOf('-') === -1)) {
-                        if (typeof eq === 'number') return parseInt(eq);
+                        if (`${parseInt(eq)}` === eq) return parseInt(eq);
                         else return sendError(`something went wrong (you may have caused it)`)
                     } else {
 
@@ -116,14 +118,18 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 
 canvas.onclick = (ev) => {
     reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x / scale + getCanvBL(center).x, ev.y / scale + getCanvBL(center).y));
-    graph(getElementValue(input));
+    graph(getElementValue(eqInput));
 };
 
 document.onkeydown = (k) => {
     if (k.key === 'Enter') {
-        graph(getElementValue(input));
+        graph(getElementValue(eqInput));
     };
 };
+
+resoSlider.ondrag = (e) => {
+
+}
 
 const graph = (eq) => {
     const points = []
