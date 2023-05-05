@@ -44,8 +44,8 @@ const fixAdjacent = (exp) => {
     let newExp = ''
     for (let x = 0; x < exp.length; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
-        if ((typeof exp[x] === 'number') && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if (((typeof newExp[newExp.length - 1] === 'number') && ((newExp[exp.length - 1] === ')')) || (exp[x] === '('))) newExp += '*'
+        if ((typeof parseInt(exp[x]) === 'number') && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
+        if (((typeof parseInt(newExp[newExp.length - 1]) === 'number') && ((newExp[exp.length - 1] === ')')) || (exp[x] === '('))) newExp += '*'
         newExp += exp[x]
     }
     return newExp
@@ -92,13 +92,16 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
                         if (`${parseInt(eq)}` === eq) return parseInt(eq);
                         else return sendError(`something went wrong (you may have caused it)`)
                     } else {
-
+                        const opStart = findFirstOp(eq, ['+', '-'])
+                        const oppedRange = findOperated(eq, opStart)
                     };
                 } else {
-
+                    const opStart = findFirstOp(eq, ['%', 'mod'])
+                    const oppedRange = findOperated(eq, opStart)
                 };
             } else {
- 
+                const opStart = findFirstOp(eq, ['/', '*', '!'])
+                const oppedRange = findOperated(eq, opStart)
             };
         } else {
             const opStart = findFirstOp(eq, ['^', '**', 'root'])
