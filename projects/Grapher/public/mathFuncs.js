@@ -1,6 +1,6 @@
 const maths = {
     mod: (x, m) => ((x % m) + m) % m,
-    rem: (x, r) => x % m,
+    '%': (x, r) => x % m,
     sin: (t) => Math.sin(t),
     asin: (t) => Math.asin(t),
     sinh: (t) => Math.sinh(t),
@@ -20,7 +20,7 @@ const maths = {
     '*': (n1, n2) => n1 * n2,
     '/': (n1, n2) => n1 / n2,
     '^': (n1, n2) => n1 ** n2,
-    factorial: (num) => {
+    '!': (num) => {
         let result = 1;
         for (let i = 1; i <= num; i++) {
             result *= i;
