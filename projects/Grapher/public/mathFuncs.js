@@ -14,12 +14,12 @@ const maths = {
     atan2: (y, x) => Math.atan2(y, x),
     tanh: (t) => Math.tanh(t),
     atanh: (t) => Math.atanh(t),
-    nrt: (n, rt) => Math.pow(n, 1 / rt),
-    add: (n1, n2) => n1 + n2,
-    subtract: (n1, n2) => n1 - n2,
-    multiply: (n1, n2) => n1 * n2,
-    divide: (n1, n2) => n1 / n2,
-    exp: (n1, n2) => n1 ** n2,
+    root: (n, rt) => Math.pow(n, 1 / rt),
+    '+': (n1, n2) => n1 + n2,
+    '-': (n1, n2) => n1 - n2,
+    '*': (n1, n2) => n1 * n2,
+    '/': (n1, n2) => n1 / n2,
+    '^': (n1, n2) => n1 ** n2,
     factorial: (num) => {
         let result = 1;
         for (let i = 1; i <= num; i++) {
@@ -27,8 +27,8 @@ const maths = {
         }
         return result;
     },
-    random: (low, high) => Math.random() * (high - low) + low,
-    randomInt: (low, high) => Math.round(Math.random() * (high - low) + low),
+    //random: (low, high) => Math.random() * (high - low) + low,
+    //randomInt: (low, high) => Math.round(Math.random() * (high - low) + low),
 }
 
 export {

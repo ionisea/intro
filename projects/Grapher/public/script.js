@@ -1,10 +1,11 @@
-import { setCanvas, width, height, displayGraph } from './graphics.js';
+import { setCanvas, width, height, displayGraph, clear } from './graphics.js';
 import { maths } from './mathFuncs.js';
 
 setCanvas(document.getElementById('screen'))
 const canvas = document.getElementById('screen')
 const eqInput = document.getElementById('eq');
 const resoSlider = document.getElementById('resolution')
+const resoLabel = document.getElementById('resoLabel')
 
 
 const getElementValue = (e) => e.value;
@@ -73,13 +74,17 @@ const findFirstOp = (exp, ops) => {
 const findOperated = (exp, opObj) => {
     let range = { open: undefined, close: undefined }
     for (let x = 1; x < exp.length; x++) {
-        if ((range.open === undefined) && (parseInt(typeof exp[opObj.index - x]) !== 'number')) {
+        if ((range.open === undefined) && (typeof parseInt(exp[opObj.index - x]) !== 'number')) {
             range.open = opObj.index - x
-        } if ((range.close === undefined) && (parseInt(typeof exp[opObj.index + opObj.op.length + x]) !== 'number')) {
+        } if ((range.close === undefined) && (typeof parseInt(exp[opObj.index + opObj.op.length + x]) !== 'number')) {
             range.close = opObj.index + opObj.op.length + x
         }
     }
     return range;
+}
+
+const operate = (exp)   => {
+
 }
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
@@ -130,11 +135,12 @@ document.onkeydown = (k) => {
     };
 };
 
-resoSlider.ondrag = (e) => {
-
+resoSlider.onmousemove = (e) => {
+    resoLabel.innerHTML = `resolution (px between points) = ${getElementValue(resoSlider)}:`
 }
 
 const graph = (eq) => {
+    clear();
     const points = []
     for (let x = 0; x < width; x += resolution) {
         const trueX = x / scale + getCanvBL(center);
