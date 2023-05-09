@@ -45,8 +45,8 @@ const fixAdjacent = (exp) => {
     let newExp = ''
     for (let x = 0; x < exp.length; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
-        if ((typeof parseInt(exp[x]) === 'number') && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
-        if (((typeof parseInt(newExp[newExp.length - 1]) === 'number') && ((newExp[exp.length - 1] === ')')) || (exp[x] === '('))) newExp += '*'
+        if ((((parseInt(newExp[newExp.length - 1]) !== NaN) || (newExp[exp.length - 1] === ')')) && (exp[x] === '('))) newExp += '*'
+        if ((parseInt(exp[x]) !== NaN) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
         newExp += exp[x]
     }
     return newExp
@@ -74,9 +74,9 @@ const findFirstOp = (exp, ops) => {
 const findOperated = (exp, opObj) => {
     let range = { open: undefined, close: undefined }
     for (let x = 1; x < exp.length; x++) {
-        if ((range.open === undefined) && (typeof parseInt(exp[opObj.index - x]) !== 'number')) {
+        if ((range.open === undefined) && ( parseInt(exp[opObj.index - x]) === NaN)) {
             range.open = opObj.index - x
-        } if ((range.close === undefined) && (typeof parseInt(exp[opObj.index + opObj.op.length + x]) !== 'number')) {
+        } if ((range.close === undefined) && (parseInt(exp[opObj.index + opObj.op.length + x]) === NaN)) {
             range.close = opObj.index + opObj.op.length + x
         }
     }
