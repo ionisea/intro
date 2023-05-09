@@ -20,14 +20,14 @@ const disablePage = () => { // I may use this in case some jerk tries to exploit
 }
 
 class Point {
-    constructor(x, y) {
-        this.x = x;
+    constructor(x, y) { 
+        this.x = x; 
         this.y = y;
-    };
+     };
 
     translate(dir) {
-
-    }
+        //may be used later for standardization
+    };
 };
 
 let center = new Point(width / 2, height / 2); //center coord
@@ -72,7 +72,12 @@ const findFirstOp = (exp, ops) => {
 }
 
 const findOperated = (exp, opObj) => {
-    let range = { open: undefined, close: undefined }
+    return {
+        n1: exp.lastIndexOf(),
+        op: opObj.op,
+        n2: parseInt(exp[opObj.index + opObj.op.length]),
+    }
+    /*let range = { open: undefined, close: undefined }
     for (let x = 1; x < exp.length; x++) {
         if ((range.open === undefined) && ( parseInt(exp[opObj.index - x]) === NaN)) {
             range.open = opObj.index - x
@@ -80,10 +85,15 @@ const findOperated = (exp, opObj) => {
             range.close = opObj.index + opObj.op.length + x
         }
     }
-    return range;
+    return range;*/
 }
 
-const operate = (exp)   => {
+const operate = (n1, op, n2) => {
+    if (maths[op] !== undefined) {
+
+    } else {
+        sendError('one or more of your operations are invalid')
+    }
 
 }
 
