@@ -1,6 +1,6 @@
 const maths = {
     mod: (x, m) => ((x % m) + m) % m,
-    '%': (x, r) => x % m,
+    '%': (x, r) => x % r,
     sin: (t) => Math.sin(t),
     asin: (t) => Math.asin(t),
     sinh: (t) => Math.sinh(t),
@@ -14,7 +14,7 @@ const maths = {
     atan2: (y, x) => Math.atan2(y, x),
     tanh: (t) => Math.tanh(t),
     atanh: (t) => Math.atanh(t),
-    root: (n, rt) => Math.pow(n, 1 / rt),
+    root: (rt, n) => Math.pow(n, 1 / rt),
     '+': (n1, n2) => n1 + n2,
     '-': (n1, n2) => n1 - n2,
     '*': (n1, n2) => n1 * n2,
