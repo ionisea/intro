@@ -75,7 +75,7 @@ const findOperated = (exp, opObj) => {
     return {
         n1: exp.lastIndexOf(),
         op: opObj.op,
-        n2: parseInt(exp[opObj.index + opObj.op.length]),
+        n2: parseInt(exp.substring(opObj.index + opObj.op.length)),
     }
     /*let range = { open: undefined, close: undefined }
     for (let x = 1; x < exp.length; x++) {
@@ -90,7 +90,7 @@ const findOperated = (exp, opObj) => {
 
 const operate = (n1, op, n2) => {
     if (maths[op] !== undefined) {
-
+        return maths[op](n1, n2) 
     } else {
         sendError('one or more of your operations are invalid')
     }
