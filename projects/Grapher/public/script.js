@@ -12,12 +12,14 @@ const getElementValue = (e) => e.value;
 
 const sendError = (of) => alert(`error: ${of}`)
 
+/*
 const disablePage = () => { // I may use this in case some jerk tries to exploit security vulnerabilities that I may or may not add
     const mathsVals = Object.values(maths)
     setInterval(() => {
         alert(`${mathsVals[Math.floor(Math.random() * mathsVals.length)](Math.random(), Math.random())}`)
     }, 20)
 }
+*/
 
 class Point {
     constructor(x, y) { 
@@ -73,7 +75,7 @@ const findFirstOp = (exp, ops) => {
 
 const findOperated = (exp, opObj) => {
     return {
-        n1: exp.lastIndexOf(),
+        n1: exp.substring(lastIndexOf(exp.substring(0,))),
         op: opObj.op,
         n2: parseInt(exp.substring(opObj.index + opObj.op.length)),
     }
@@ -128,7 +130,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
         const first = findFirstOp(eq, ['|', '('])
         const nestEnd = findExpEnd(eq.substring(first.index + 1, first))
         return evaluate(eq.substring(0, first.index - 1) +
-            (first.op === '|' ? maths[abs](evaluate(eq.substring(first.index + 1, nestEnd))) :
+            (first.op === '|' ? ops[abs](evaluate(eq.substring(first.index + 1, nestEnd))) :
                 evaluate(eq.substring(first.index + 1, nestEnd))) +
             eq.substring(nestEnd + 1));
     };
