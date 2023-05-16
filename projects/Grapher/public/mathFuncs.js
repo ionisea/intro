@@ -31,8 +31,33 @@ const maths = {
     //randomInt: (low, high) => Math.round(Math.random() * (high - low) + low),
 }
 
+class TwoArgExp {
+    constructor (a1, op, a2) {  
+        this.a1 = a1;
+        this.a2 = a2;
+        this.op = op;
+    }
+
+    eval() {
+        return this.op(this.a1,this.a2)
+    }
+}
+
+class OneArgExp {
+    constructor (a, op) {  
+        this.a = a;
+        this.op = op;
+    }
+
+    eval() {
+        return this.op(this.a)
+    }
+}
+
 export {
     maths,
+    OneArgExp,
+    TwoArgExp,
 }
 
 //maths['name'](args)

@@ -1,5 +1,5 @@
 import { setCanvas, width, height, displayGraph, clear } from './graphics.js';
-import { maths } from './mathFuncs.js';
+import { maths, OneArgExp, TwoArgExp, } from './mathFuncs.js';
 
 setCanvas(document.getElementById('screen'))
 const canvas = document.getElementById('screen')
@@ -41,7 +41,7 @@ const reCenter = (mult, newCenter) => { //for later zoom in/out
     scale *= mult;
 };
 
-const fixAdjacent = (exp) => {
+const fixAdjacent = (exp) => { //functional
     let newExp = ''
     for (let x = 0; x < exp.length; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
@@ -56,10 +56,10 @@ const findExpEnd = (expRest, opObj) => {
     let needed = { num: 1, open: opObj.op, close: opObj.op === '(' ? ')' : '|' }
     for (let c = 0; c < expRest.length - 1; c++) {
         if ((needed.open !== needed.close) && (expRest[c] == '(')) needed.num++
-        else if (expRest[c] == opObj.close) needed.num--
+        else if (expRest[c] == needed.close) needed.num--
         if (needed.num === 0) return c
     }
-    return sendError(`no closing parenthesis / abs marker`)
+    sendError(`no closing parenthesis / abs marker`)
 }
 
 const findFirstOp = (exp, ops) => {
