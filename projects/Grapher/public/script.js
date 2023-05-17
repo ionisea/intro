@@ -1,5 +1,5 @@
 import { setCanvas, width, height, displayGraph, clear } from './graphics.js';
-import { maths, OneArgExp, TwoArgExp, } from './mathFuncs.js';
+import { ops, OneArgExp, TwoArgExp, } from './mathFuncs.js';
 
 setCanvas(document.getElementById('screen'))
 const canvas = document.getElementById('screen')
@@ -22,10 +22,10 @@ const disablePage = () => { // I may use this in case some jerk tries to exploit
 */
 
 class Point {
-    constructor(x, y) { 
-        this.x = x; 
+    constructor(x, y) {
+        this.x = x;
         this.y = y;
-     };
+    };
 
     translate(dir) {
         //may be used later for standardization
@@ -73,12 +73,16 @@ const findFirstOp = (exp, ops) => {
     return first;
 }
 
-const findOperated = (exp, opObj) => {
-    return {
-        n1: exp.substring(lastIndexOf(exp.substring(0,))),
-        op: opObj.op,
-        n2: parseInt(exp.substring(opObj.index + opObj.op.length)),
+const findOperated = (exp, op, index) => {
+    const maybeOneOp = ops.oneArg.keys().includes(opObj.op)
+    let expO = {
+        n1: parseInt(exp.substring(exp.split.slice(0, index - 1).findLastIndex(e => parseInt(e) !== NaN), index - 1)),
+        op,
     }
+    if (!maybeOneOp) {
+        expO.assign({ n2: parseInt(exp.substring(exp.split.slice(index + 1).findIndex(e => parseInt(e) !== NaN), index + 1)) })
+    }
+    return expO;
     /*let range = { open: undefined, close: undefined }
     for (let x = 1; x < exp.length; x++) {
         if ((range.open === undefined) && ( parseInt(exp[opObj.index - x]) === NaN)) {
@@ -89,7 +93,7 @@ const findOperated = (exp, opObj) => {
     }
     return range;*/
 }
-
+/*
 const operate = (n1, op, n2) => {
     if (maths[op] !== undefined) {
         return maths[op](n1, n2) 
@@ -97,7 +101,7 @@ const operate = (n1, op, n2) => {
         sendError('one or more of your operations are invalid')
     }
 
-}
+}*/
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
