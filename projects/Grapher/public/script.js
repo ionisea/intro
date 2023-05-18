@@ -74,7 +74,7 @@ const findFirstOp = (exp, ops) => {
 }
 
 const findOperated = (exp, op, index) => {
-    const maybeOneOp = ops.oneArg.keys().includes(opObj.op)
+    const maybeOneOp = Object.keys(ops.oneArg.includes(opObj.op));
     let expO = {
         n1: parseInt(exp.substring(exp.split.slice(0, index - 1).findLastIndex(e => parseInt(e) !== NaN), index - 1)),
         op,
@@ -152,7 +152,7 @@ document.onkeydown = (k) => {
 };
 
 resoSlider.onmousemove = (e) => {
-    resoLabel.innerHTML = `resolution (px between points) = ${getElementValue(resoSlider)}:`
+    resoLabel.innerHTML = `resolution (x-px between points) = ${getElementValue(resoSlider)}:`
 }
 
 const graph = (eq) => {

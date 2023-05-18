@@ -1,11 +1,17 @@
 const ops = {
     oneArg: {
         sin: (t) => Math.sin(t),
+        asin: (t) => Math.asin(t),
         sinh: (t) => Math.sinh(t),
+        asinh: (t) => Math.asinh(t),
         cos: (t) => Math.cos(t),
+        acos: (t) => Math.acos(t),
         cosh: (t) => Math.cosh(t),
+        acosh: (t) => Math.acosh(t),
         tan: (t) => Math.tan(t),
+        atan: (t) => Math.atan(t),
         tanh: (t) => Math.tanh(t),
+        atanh: (t) => Math.atanh(t),
         '!': (num) => {
             let result = 1;
             for (let i = 1; i <= num; i++) {
