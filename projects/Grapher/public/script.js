@@ -6,6 +6,7 @@ const canvas = document.getElementById('screen')
 const eqInput = document.getElementById('eq');
 const resoSlider = document.getElementById('resolution')
 const resoLabel = document.getElementById('resoLabel')
+canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 
 const getElementValue = (e) => e.value;
