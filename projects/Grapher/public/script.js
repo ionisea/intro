@@ -27,21 +27,32 @@ class Point {
         this.y = y;
     };
 
-    translate(dir) {
-        //may be used later for standardization
+    trueToCanv(global) {
+
+    };
+
+    canvToTrue(global){
+
     };
 };
 
-let center = new Point(width / 2, height / 2); //center coord
-let scale = 1; //px per unit
-let resolution = 1; //px between points
+class Global {
+    constructor (){
+        this.center = new Point(0, 0);
+        this.resolution = 5;
+        this.scale = 1;
+    }
 
-const getCanvBL = (ctr) => new Point(ctr - width / 2 / scale, ctr - height / 2 / scale)
+    getCanvCorner (x,y){ // -1 to 1 for both
+        return new Point(this.center.x + width/2/scale*x, this.center.y + height/2/scale*y)
+    }
 
-const reCenter = (mult, newCenter) => { //for later zoom in/out
-    center = newCenter;
-    scale *= mult;
-};
+    reCenter(x,y){
+        this.center = new Point(x,y).canvToTrue(this)
+    }
+}
+
+const global = new Global()
 
 const fixAdjacent = (exp) => { //functional
     let newExp = ''
@@ -141,7 +152,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
 };
 
 canvas.onclick = (ev) => {
-    reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x / scale + getCanvBL(center).x, ev.y / scale + getCanvBL(center).y));
+    //reCenter(ev.button === 0 ? 0.5 : 2, new Point(ev.x / scale + getCanvBL(center).x, ev.y / scale + getCanvBL(center).y));
     graph(getElementValue(eqInput));
 };
 
@@ -153,14 +164,15 @@ document.onkeydown = (k) => {
 
 resoSlider.onmousemove = (e) => {
     resoLabel.innerHTML = `resolution (x-px between points) = ${getElementValue(resoSlider)}:`
+    global.resolution = parseInt(getElementValue(resoSlider))
 }
 
 const graph = (eq) => {
     clear();
     const points = []
     for (let x = 0; x < width; x += resolution) {
-        const trueX = x / scale + getCanvBL(center);
+        const trueX = x / scale + getCanvBL(center).x;
         points.push(new Point(trueX, evaluate(eq, trueX)));
     };
-    displayGraph(points.map(p => (p - getCanvBL(center)) * scale));
+    displayGraph(points.map(p => p.trueToCanv()));
 };
