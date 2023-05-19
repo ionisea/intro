@@ -12,13 +12,6 @@ const ops = {
         atan: (t) => Math.atan(t),
         tanh: (t) => Math.tanh(t),
         atanh: (t) => Math.atanh(t),
-        '!': (num) => {
-            let result = 1;
-            for (let i = 1; i <= num; i++) {
-                result *= i;
-            }
-            return result;
-        },
         round: (n) => Math.round(num),
     },
     twoArg: {

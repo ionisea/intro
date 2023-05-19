@@ -32,24 +32,24 @@ class Point {
 
     };
 
-    canvToTrue(global){
+    canvToTrue(global) {
 
     };
 };
 
 class Global {
-    constructor (){
+    constructor() {
         this.center = new Point(0, 0);
         this.resolution = 5;
         this.scale = 1;
     }
 
-    getCanvCorner (x,y){ // -1 to 1 for both
-        return new Point(this.center.x + width/2/scale*x, this.center.y + height/2/scale*y)
+    getCanvCorner(x, y) { // -1 to 1 for both
+        return new Point(this.center.x + width / 2 / scale * x, this.center.y + height / 2 / scale * y)
     }
 
-    reCenter(x,y){
-        this.center = new Point(x,y).canvToTrue(this)
+    reCenter(x, y) {
+        this.center = new Point(x, y).canvToTrue(this)
     }
 }
 
@@ -59,8 +59,8 @@ const fixAdjacent = (exp) => { //functional
     let newExp = ''
     for (let x = 0; x < exp.length; x++) {
         //the reason the following two are not bundled into one is because both of them may trigger
-        if ((((parseInt(newExp[newExp.length - 1]) !== NaN) || (newExp[exp.length - 1] === ')')) && (exp[x] === '('))) newExp += '*'
-        if ((parseInt(exp[x]) !== NaN) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
+        if (((!isNaN(parseInt(newExp[newExp.length - 1])) || (newExp[exp.length - 1] === ')')) && (exp[x] === '('))) newExp += '*'
+        if (!isNaN(parseInt(exp[x])) && (newExp[newExp[newExp.length - 1]] === ')')) newExp += '*'
         newExp += exp[x]
     }
     return newExp
@@ -86,25 +86,30 @@ const findFirstOp = (exp, ops) => {
 }
 
 const findOperated = (exp, op, index) => {
-    const maybeOneOp = Object.keys(ops.oneArg.includes(opObj.op));
-    let expO = {
-        n1: parseInt(exp.substring(exp.split.slice(0, index - 1).findLastIndex(e => parseInt(e) !== NaN), index - 1)),
-        op,
-    }
-    if (!maybeOneOp) {
-        expO.assign({ n2: parseInt(exp.substring(exp.split.slice(index + 1).findIndex(e => parseInt(e) !== NaN), index + 1)) })
-    }
-    return expO;
-    /*let range = { open: undefined, close: undefined }
-    for (let x = 1; x < exp.length; x++) {
-        if ((range.open === undefined) && ( parseInt(exp[opObj.index - x]) === NaN)) {
-            range.open = opObj.index - x
-        } if ((range.close === undefined) && (parseInt(exp[opObj.index + opObj.op.length + x]) === NaN)) {
-            range.close = opObj.index + opObj.op.length + x
-        }
-    }
-    return range;*/
+    const maybeOneOp = Object.keys(ops.oneArg).includes(op);
+    if (maybeOneOp) {
+        return new OneArgExp(
+            parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
+            op,
+            );
+    } else {
+        return new TwoArgExp (
+            parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
+            op,
+            parseInt(exp.substring(exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))), index + 1)),
+        );
+    };
 }
+
+/*let range = { open: undefined, close: undefined }
+   for (let x = 1; x < exp.length; x++) {
+       if ((range.open === undefined) && ( parseInt(exp[opObj.index - x]) === NaN)) {
+           range.open = opObj.index - x
+       } if ((range.close === undefined) && (parseInt(exp[opObj.index + opObj.op.length + x]) === NaN)) {
+           range.close = opObj.index + opObj.op.length + x
+       }
+   }
+   return range;*/
 /*
 const operate = (n1, op, n2) => {
     if (maths[op] !== undefined) {
@@ -119,7 +124,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
     if ((eq.indexOf('(') === -1) && (eq.indexOf('|') === -1)) {
         if ((eq.indexOf('^') === -1) && (eq.indexOf('**') === -1) && (eq.indexOf('root') === -1)) {
-            if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1) && eq.indexOf('!' === -1)) {
+            if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1)) {
                 if ((eq.indexOf('%') === -1) && (eq.indexOf('mod') === -1)) {
                     if ((eq.indexOf('+') === -1) && (eq.indexOf('-') === -1)) {
                         if (`${parseInt(eq)}` === eq) return parseInt(eq);
