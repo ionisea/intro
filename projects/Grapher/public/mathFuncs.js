@@ -26,6 +26,12 @@ const ops = {
         '%': (x, r) => x % r,
         random: (low, high) => Math.random() * (high - low) + low,
     },
+    ordered: [
+        ['(', '|'],
+        ['^', '**', 'root'],
+        ['*', '/'],
+        ['%', 'mod']
+    ]
 };
 
 class TwoArgExp {

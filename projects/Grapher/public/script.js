@@ -7,6 +7,7 @@ const eqInput = document.getElementById('eq');
 const resoSlider = document.getElementById('resolution')
 const resoLabel = document.getElementById('resoLabel')
 canvas.addEventListener("contextmenu", e => e.preventDefault());
+canvas.addEventListener("scroll", e => e.preventDefault());
 
 
 const getElementValue = (e) => e.value;
@@ -135,7 +136,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
                     };
                 } else {
                     const opStart = findFirstOp(eq, ['%', 'mod'])
-                    const oppedRange = findOperated(eq, opStart)
+                    const oppedRange = findOperated(eq, opStart.op, opStart.index)
                 };
             } else {
                 const opStart = findFirstOp(eq, ['/', '*', '!'])
@@ -170,14 +171,15 @@ document.onkeydown = (k) => {
 
 resoSlider.onmousemove = (e) => {
     resoLabel.innerHTML = `resolution (x-px between points) = ${getElementValue(resoSlider)}:`
-    global.resolution = parseInt(getElementValue(resoSlider))
+    global.resolution = getElementValue(resoSlider)
 }
+
 
 const graph = (eq) => {
     clear();
     const points = []
-    for (let x = 0; x < width; x += resolution) {
-        const trueX = x / scale + getCanvBL(center).x;
+    for (let x = 0; x < width; x += global.resolution) {
+        const trueX = x / global.scale + getCanvBL(global.center).x;
         points.push(new Point(trueX, evaluate(eq, trueX)));
     };
     displayGraph(points.map(p => p.trueToCanv()));
