@@ -92,9 +92,9 @@ const findOperated = (exp, op, index) => {
         return new OneArgExp(
             parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
             op,
-            );
+        );
     } else {
-        return new TwoArgExp (
+        return new TwoArgExp(
             parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
             op,
             parseInt(exp.substring(exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))), index + 1)),
@@ -123,6 +123,15 @@ const operate = (n1, op, n2) => {
 
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
+    for (const set of ops.ordered) {
+        if (set.some(op => !(eq.indexOf(op) === -1))) {
+            const op = findFirstOp(eq, set)
+            const expRange = findOperated(eq, op.op, op.index)
+        }
+    }
+    if (`${parseInt(eq)}` === eq) return parseInt(eq);
+    else return sendError(`something went wrong (you may have caused it)`)
+    
     if ((eq.indexOf('(') === -1) && (eq.indexOf('|') === -1)) {
         if ((eq.indexOf('^') === -1) && (eq.indexOf('**') === -1) && (eq.indexOf('root') === -1)) {
             if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1)) {
@@ -132,19 +141,19 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
                         else return sendError(`something went wrong (you may have caused it)`)
                     } else {
                         const opStart = findFirstOp(eq, ['+', '-'])
-                        const oppedRange = findOperated(eq, opStart)
+                        const oppedRange = findOperated(eq, opStart.op, opStart.index)
                     };
                 } else {
                     const opStart = findFirstOp(eq, ['%', 'mod'])
                     const oppedRange = findOperated(eq, opStart.op, opStart.index)
                 };
             } else {
-                const opStart = findFirstOp(eq, ['/', '*', '!'])
-                const oppedRange = findOperated(eq, opStart)
+                const opStart = findFirstOp(eq, ['/', '*'])
+                const oppedRange = findOperated(eq, opStart.op, opStart.index)
             };
         } else {
             const opStart = findFirstOp(eq, ['^', '**', 'root'])
-            const oppedRange = findOperated(eq, opStart)
+            const oppedRange = findOperated(eq, opStart.op, opStart.index)
 
         };
     } else {
