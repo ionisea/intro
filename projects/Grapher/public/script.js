@@ -67,15 +67,15 @@ const fixAdjacent = (exp) => { //functional
     return newExp
 }
 
-const findExpEnd = (expRest, opObj) => {
-    let needed = { num: 1, open: opObj.op, close: opObj.op === '(' ? ')' : '|' }
+const evalParens = (exp, op, index) => {
+    let needed = { num: 1, open: op, close: op === '(' ? ')' : '|' }
     for (let c = 0; c < expRest.length - 1; c++) {
-        if ((needed.open !== needed.close) && (expRest[c] == '(')) needed.num++
-        else if (expRest[c] == needed.close) needed.num--
-        if (needed.num === 0) return c
+        if (expRest[c] == '(') needed.num++
+        else if (expRest[c] === needed.close) needed.num--
+        if (needed.num === 0) return evaluate(exp.substring(0, index) + evaluate(exp.substring(0,c-1)) + exp.substring(c+1));
     }
     sendError(`no closing parenthesis / abs marker`)
-}
+};
 
 const findFirstOp = (exp, ops) => {
     let first = { op: undefined, index: Infinity };
@@ -97,7 +97,7 @@ const findOperated = (exp, op, index) => {
         return new TwoArgExp(
             parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
             op,
-            parseInt(exp.substring(exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))), index + 1)),
+            parseInt(exp.substring(index + 1, exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))))),
         );
     };
 }
@@ -124,14 +124,14 @@ const operate = (n1, op, n2) => {
 const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc' 'trigfunction()' '|num|' 'a mod (or things like it) b' 'num!'
     if (x != undefined) return evaluate(fixAdjacent(eq.replaceAll('x', `(${x})`).replaceAll(' ', '')))
     for (const set of ops.ordered) {
-        if (set.some(op => !(eq.indexOf(op) === -1))) {
-            const op = findFirstOp(eq, set)
+        const op = findFirstOp(eq, set)
+        if (op.op !== undefined) {
             const expRange = findOperated(eq, op.op, op.index)
         }
     }
     if (`${parseInt(eq)}` === eq) return parseInt(eq);
     else return sendError(`something went wrong (you may have caused it)`)
-    
+    /*
     if ((eq.indexOf('(') === -1) && (eq.indexOf('|') === -1)) {
         if ((eq.indexOf('^') === -1) && (eq.indexOf('**') === -1) && (eq.indexOf('root') === -1)) {
             if ((eq.indexOf('*') === -1) && (eq.indexOf('/') === -1)) {
@@ -164,7 +164,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
             (first.op === '|' ? ops[abs](evaluate(eq.substring(first.index + 1, nestEnd))) :
                 evaluate(eq.substring(first.index + 1, nestEnd))) +
             eq.substring(nestEnd + 1));
-    };
+    };*/
 };
 
 canvas.onclick = (ev) => {
