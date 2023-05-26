@@ -24,7 +24,7 @@ const ops = {
         '**': (n1, n2) => n1 ** n2,
         mod: (x, m) => ((x % m) + m) % m,
         '%': (x, r) => x % r,
-        random: (low, high) => Math.random() * (high - low) + low,
+        rand: (low, high) => Math.random() * (high - low) + low,
     },
     ordered: [
         ['(', '|'],
@@ -35,23 +35,6 @@ const ops = {
     ]
 };
 
-class TwoArgExp {
-    constructor(a1, op, a2) {
-        this.a1 = a1;
-        this.a2 = a2;
-        this.op = op;
-    }
-}
-
-class OneArgExp {
-    constructor(a, op) {
-        this.a = a;
-        this.op = op;
-    }
-}
-
 export {
     ops,
-    OneArgExp,
-    TwoArgExp,
 }

@@ -30,7 +30,8 @@ class Point {
     };
 
     trueToCanv(global) {
-
+        const tl = global.getCanvCorner(-1,-1)
+        
     };
 
     canvToTrue(global) {
@@ -72,7 +73,7 @@ const evalParens = (exp, op, index) => {
     for (let c = 0; c < expRest.length - 1; c++) {
         if (expRest[c] == '(') needed.num++
         else if (expRest[c] === needed.close) needed.num--
-        if (needed.num === 0) return evaluate(exp.substring(0, index) + evaluate(exp.substring(0,c-1)) + exp.substring(c+1));
+        if (needed.num === 0) return evaluate(exp.substring(0, index) + evaluate(exp.substring(0, c - 1)) + exp.substring(c + 1));
     }
     sendError(`no closing parenthesis / abs marker`)
 };
@@ -86,18 +87,16 @@ const findFirstOp = (exp, ops) => {
     return first;
 }
 
-const findOperated = (exp, op, index) => {
+const operate = (exp, op, index) => {
     const maybeOneOp = Object.keys(ops.oneArg).includes(op);
     if (maybeOneOp) {
-        return new OneArgExp(
-            parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
-            op,
-        );
+        return ops.oneArg[op](
+            parseInt(exp.substring(index+ op.length, index + 1, exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))))),
+        )
     } else {
-        return new TwoArgExp(
+        return ops.twoArg[op](
             parseInt(exp.substring(exp.split().slice(0, index - 1).findLastIndex(e => !isNaN(parseInt(e))), index - 1)),
-            op,
-            parseInt(exp.substring(index + 1, exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))))),
+            parseInt(exp.substring(index + op.length, exp.split().slice(index + 1).findIndex(e => !isNaN(parseInt(e))))),
         );
     };
 }
@@ -126,7 +125,7 @@ const evaluate = (eq, x) => { //things js cannot understand: 'x(), (x-y)(2), etc
     for (const set of ops.ordered) {
         const op = findFirstOp(eq, set)
         if (op.op !== undefined) {
-            const expRange = findOperated(eq, op.op, op.index)
+            evaluate(operate(eq, op.op, op.index))
         }
     }
     if (`${parseInt(eq)}` === eq) return parseInt(eq);
