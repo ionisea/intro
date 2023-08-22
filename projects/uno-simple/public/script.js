@@ -62,13 +62,12 @@ class Player {
         //card.face = '+2'
         this.hand.push(card)
         const disp = document.createElement('div')
+        card.disp = disp;
         disp.className = 'card'
         disp.style.backgroundColor = card.color//setAttribute('style', `backgroundColor: ${card.color}`)
         disp.append(document.createTextNode(card.face))
         disp.addEventListener('mousedown', () => {
-            if ((playing.active === 0) && (card.color === playing.currCard.color) || (card.face === playing.currCard.face) || (card.color === 'grey')) {
-                this.playCard(card, disp)
-            }
+            this.playCard(card)
         }
         )
         this.cardDispArr.push(disp)
@@ -79,10 +78,10 @@ class Player {
         }
     }
 
-    playCard(card, disp) {
-        const original = this.cardDispArr;
-        disp.remove();
-        const ind = this.cardDispArr.findIndex((e, i) => e === original[i]);
+    playCard(card) {
+        if ((playing.active === 0) && (card.color === playing.currCard.color) || (card.face === playing.currCard.face) || (card.color === 'grey')) {
+        const ind = this.cardDispArr.findIndex((e) => e == card.disp);
+        this.cardDispArr[ind].remove();
         this.hand.splice(ind, 1);
         updateCurrCard(card);
         checkForAbility(card);
@@ -92,6 +91,7 @@ class Player {
         };
         moveTurn();
         elements.hand.style.backgroundColor = 'transparent';
+    }
     };
 };
 
@@ -211,6 +211,11 @@ window.onload = () => {
 document.onkeydown = (e) => { // ( : cheatimg
     if (playing.playerArr.find((p) => p === `com${e.key.toUpperCase()}`) != undefined) {
         console.log(playing[`com${e.key.toUpperCase()}`].hand)
+    }
+
+    if ((e.key / 1 != NaN) && (e.key / 1 <= player.hand.length)) {
+        player.playCard(player.hand[e.key / 1 - 1])
+        console.log('e')
     }
 }
 
