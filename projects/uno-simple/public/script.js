@@ -80,8 +80,9 @@ class Player {
 
     playCard(card) {
         if ((playing.active === 0) && (card.color === playing.currCard.color) || (card.face === playing.currCard.face) || (card.color === 'grey')) {
-        const ind = this.cardDispArr.findIndex((e) => e == card.disp);
+        const ind = this.cardDispArr.findIndex((e) => e === card.disp);
         this.cardDispArr[ind].remove();
+        this.cardDispArr.splice(ind, 1);
         this.hand.splice(ind, 1);
         updateCurrCard(card);
         checkForAbility(card);
@@ -212,10 +213,8 @@ document.onkeydown = (e) => { // ( : cheatimg
     if (playing.playerArr.find((p) => p === `com${e.key.toUpperCase()}`) != undefined) {
         console.log(playing[`com${e.key.toUpperCase()}`].hand)
     }
-
     if ((e.key / 1 != NaN) && (e.key / 1 <= player.hand.length)) {
         player.playCard(player.hand[e.key / 1 - 1])
-        console.log('e')
     }
 }
 
