@@ -6,6 +6,7 @@ let elements = {
     drawStack: document.getElementById('draw'),
     hand: document.getElementById('hand'),
     arrow: document.getElementById('arrow'),
+    uno: document.getElementById('unoButton'),
 }
 
 const randCard = () => {
@@ -80,19 +81,19 @@ class Player {
 
     playCard(card) {
         if ((playing.active === 0) && (card.color === playing.currCard.color) || (card.face === playing.currCard.face) || (card.color === 'grey')) {
-        const ind = this.cardDispArr.findIndex((e) => e === card.disp);
-        this.cardDispArr[ind].remove();
-        this.cardDispArr.splice(ind, 1);
-        this.hand.splice(ind, 1);
-        updateCurrCard(card);
-        checkForAbility(card);
-        if (this.hand.length === 0) {
-            alert(`You Win !`);
-            location.reload();
-        };
-        moveTurn();
-        elements.hand.style.backgroundColor = 'transparent';
-    }
+            const ind = this.cardDispArr.findIndex((e) => e === card.disp);
+            this.cardDispArr[ind].remove();
+            this.cardDispArr.splice(ind, 1);
+            this.hand.splice(ind, 1);
+            updateCurrCard(card);
+            checkForAbility(card);
+            if (this.hand.length === 0) {
+                alert(`You Win !`);
+                location.reload();
+            };
+            moveTurn();
+            elements.hand.style.backgroundColor = 'transparent';
+        }
     };
 };
 
@@ -210,13 +211,22 @@ window.onload = () => {
 }
 
 document.onkeydown = (e) => { // ( : cheatimg
+    console.log(e)
     if (playing.playerArr.find((p) => p === `com${e.key.toUpperCase()}`) != undefined) {
         console.log(playing[`com${e.key.toUpperCase()}`].hand)
     }
-    if ((e.key / 1 != NaN) && (e.key / 1 <= player.hand.length)) {
-        player.playCard(player.hand[e.key / 1 - 1])
+    if ((e.code == 'Space') && (playing.active == 0)) {
+        player.drawCard()
     }
+    if ((!isNaN(e.key)) && (e.key / 1 <= player.hand.length)) {
+        player.playCard(player.hand[e.key - 1])
+    }
+
 }
+
+setInterval(() => {
+    elements.uno.style.backgroundcolor = '#' + Math.floor(Math.random() * 2 ** 24).toString(16) // taken from my other project with the shapes
+}, 10)
 
 elements.drawStack.onmousedown = (() => {
     if (playing.active == 0) {
