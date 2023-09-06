@@ -106,6 +106,7 @@ let playing = {
     playerArr: ['player', 'comA', 'comB', 'comC'],
     colorArr: ['blue', 'green', 'yellow', 'red'],
     currCard: null,
+    playerUno: false,
 }
 
 const switchColor = () => {
@@ -185,6 +186,10 @@ const moveTurn = () => {
     if (Math.abs(playing.direction) === 2) playing.direction /= 2
     if (playing.active === 0) {
         elements.hand.style.backgroundColor = 'white'
+        if (player.hand.length<= 2){
+            elements.unoButton.style.backgroundColor = 'yellow'
+        }
+
     } else if (playing.active === 1) {
         botTurn('comA')
     } else if (playing.active === 2) {
@@ -223,10 +228,6 @@ document.onkeydown = (e) => { // ( : cheatimg
     }
 
 }
-
-setInterval(() => {
-    elements.uno.style.backgroundcolor = '#' + Math.floor(Math.random() * 2 ** 24).toString(16) // taken from my other project with the shapes
-}, 10)
 
 elements.drawStack.onmousedown = (() => {
     if (playing.active == 0) {

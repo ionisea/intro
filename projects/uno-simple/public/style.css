@@ -48,6 +48,10 @@
   font-family: 'Patrick Hand';
 }
 
+#draw{
+  color:white;
+}
+
 .hand{
   background-color: aliceblue;
 }
