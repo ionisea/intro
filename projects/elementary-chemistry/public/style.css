@@ -1,0 +1,12 @@
+body {
+  width: 40em;
+  margin: 1in auto;
+}
+
+h1 {
+  font-family: sans-serif;
+}
+
+p {
+  font-size: 18px;
+}
