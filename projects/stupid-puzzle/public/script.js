@@ -1,4 +1,4 @@
-import { setCanvas, drawLine, drawCircle, drawFilledCircle, drawFilledRect, width, height } from './graphics.js';
+import { setCanvas, drawLine, drawCircle, drawFilledCircle, drawFilledRect, width, height, drawText } from './graphics.js';
 
 // Get the element object reperesenting the canvas defined in the HTML.
 const canvas = document.getElementById('screen')
@@ -33,7 +33,13 @@ const board = () =>{
   drawFilledCircle(width/2, height*0.35, height/6, 'mediumslateblue')
 }
 
-canvas.onclick = (e) => { 
+const nums = (arr) => {
+  for (let x = width/3; x< width*2/3; x+= width/27){
+    drawText()
+  }
+}
 
+canvas.onclick = (e) => { 
+  if (Math.hypot)
 };
 board();
