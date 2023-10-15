@@ -106,6 +106,7 @@ const initBoard = () => {
     }
 }
 
+
 class Piece {
     constructor(row, file, color, face, id) {
         this.file = file,
@@ -129,6 +130,16 @@ class Piece {
         turn();
     }
 
+     legalityIterate (dRow, dFile, eRow, eFile,) {
+        for (let row = this.row + dRow; row += dRow; row != eRow) {
+            for (let file = this.file + dFile; file += dFile; file < eFile) {
+                if (play.board[row][file].piece != undefined) {
+                    return false;
+                }
+            }
+        }
+        return true
+    }
 
 }
 
@@ -143,20 +154,8 @@ class Pawn extends Piece {
 
 class Rook extends Piece {
     checkIfLegal(square, row, file) {
-        if ((this.row == row)) {
-            for (let i = Math.min(this.file, file) + 1; i < Math.max(this.file, file); i++) {
-                if (play.board[this.row][i].piece != undefined) {
-                    return false;
-                }
-            }
-            return true;
-        } else if (this.file == file) {
-            for (let i = Math.min(this.row, row) + 1; i < Math.max(this.row, row); i++) {
-                if (play.board[i][this.file].piece != undefined) {
-                    return false;
-                }
-            }
-            return true;
+        if (( (row == this.row) && !(file == this.file )) || ( !(row == this.row) && (file == this.file ) )){
+        return this.legalityIterate(Math.sign(row - this.row), 0, row, file) || this.legalityIterate(0, Math.sign(file- this.file), row, file);
         } else return false;
     }
 }
@@ -222,13 +221,14 @@ class King extends Piece {
     checkIfLegal(square, row, file) {
         if ((Math.abs(this.row - row) <= 1) || (Math.abs(this.file - file) <= 1)) {
             return true
-        } else if ((play.moves.find(e => e.color === this.color) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
-
+        } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
+            return true
         } else return false;
     }
 
-    isChecked() { //ONLY ACTIVATE ON CURRENT TURN, WILL BREAK OTHERWISE!!
+    isChecked(x, y) {
         return false // temp
+
     }
 }
 
@@ -247,7 +247,7 @@ const initPieces = () => {
         play.board[1][x].piece = new Pawn(1, x, 'black', '♟', Math.random());
         play.board[6][x].piece = new Pawn(6, x, 'white', '♟', Math.random());
     }
-    play.kings = {white: new King(7, 4, 'white', '♚'), black: new King(0, 4, 'black', '♚')}
+    play.kings = { white: new King(7, 4, 'white', '♚'), black: new King(0, 4, 'black', '♚') }
     play.board[0][4].piece = play.kings.black
     play.board[7][4].piece = play.kings.white
     refaceTiles();
