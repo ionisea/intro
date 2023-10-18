@@ -130,15 +130,20 @@ class Piece {
         turn();
     }
 
-     legalityIterate (dRow, dFile, eRow, eFile,) {
+     legalityIterate (dRow, dFile, eRow, eFile) {
+        console.log(`(${this.row}, ${this.file})`)
+        console.log('dRow', dRow);
+        console.log('dFile', dFile);
+        console.log('eRow', eRow);
+        console.log('eFile', eFile);
         for (let row = this.row + dRow; row += dRow; row != eRow) {
-            for (let file = this.file + dFile; file += dFile; file < eFile) {
+            for (let file = this.file + dFile; file += dFile; file != eFile) {
                 if (play.board[row][file].piece != undefined) {
                     return false;
                 }
             }
         }
-        return true
+        return true;
     }
 
 }
