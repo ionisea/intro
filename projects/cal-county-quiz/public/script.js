@@ -24,7 +24,7 @@ window.onload = () => {
 };
 
 const fillAnswer = (correct, answer) => {
-  let string = `The county ${current.town} is in is ${current.county}. ` + `(Your answer: ${answer} ${correct ? '✓' : '✗'}; Hints used: ${hintCount})`;
+  let string = `The county ${current.town} is in is ${current.county} county. ` + `(Your answer: ${answer} ${correct ? '✓' : '✗'}; Hints used: ${hintCount})`;
   pastAnswers = [string].concat(pastAnswers);
   correctDisplay.textContent = '';
   pastAnswers.forEach(e => correctDisplay.append(createLi(e)));
