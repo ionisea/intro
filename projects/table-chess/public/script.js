@@ -8,7 +8,7 @@ let play = {
     moves: [],
     kings: undefined,
 }
-play.visualBoard.addEventListener("selectstart", event => event.preventDefault());
+document.addEventListener("selectstart", event => event.preventDefault());
 
 const refaceTiles = () => {
     for (const row of play.board) {
