@@ -65,6 +65,13 @@ const inverseColor = {
     saddlebrown: 'darkgreen',
     sandybrown: 'lightgreen',
 }
+const colorNormal = () => {
+    play.board.forEach(row => row.forEach(e => {
+        if (e.element.style.backgroundColor.endsWith("green")) {
+            e.element.style.backgroundColor = inverseColor[e.element.style.backgroundColor];
+        }
+    }))
+}
 
 const squareClicked = (square) => {
     const r = parseInt(square.id[0])
@@ -73,15 +80,16 @@ const squareClicked = (square) => {
     const c = square.style.backgroundColor
     if (play.kings[play.player]) {
         if ((visualSquare.piece != undefined) && (visualSquare.piece.color === play.player) && (play.pickedUp == undefined)) {
+            colorNormal();
             square.style.backgroundColor = inverseColor[c]
             play.pickedUp = visualSquare.piece
         } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal(visualSquare, r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
-            play.board[play.pickedUp.row][play.pickedUp.file].element.style.backgroundColor = inverseColor[play.board[play.pickedUp.row][play.pickedUp.file].element.style.backgroundColor]
+            colorNormal();
             play.pickedUp.placePiece(r, f)
             play.moves.push({ id: play.pickedUp.id, start: { row: parseInt(`${play.pickedUp.row}`), file: parseInt(`${play.pickedUp.file}`) }, end: { row: r, file: f }, id: play.pickedUp, piece: play.pickedUp })
             play.pickedUp = undefined
         } else if (visualSquare.piece === play.pickedUp) {
-            square.style.backgroundColor = inverseColor[c]
+            colorNormal();
             play.pickedUp = undefined
         }
     }
@@ -153,8 +161,8 @@ class Piece {
 
 class Pawn extends Piece {
     checkIfLegal(square, row, file) {
-        if ((row == this.row - 1) && (this.file == file)) return true
-        else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined)) return true
+        if ((row == this.row - 1) && (this.file == file) && (play.board[row][file].piece == undefined)) return true
+        else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined) && (play.board[row][file].piece == undefined)) return true
         else if ((row == this.row - 1) && (Math.abs(file - this.file) == 1) && (play.board[row][file].piece.color !== this.color)) return true
         else return false //en passant later
     }
@@ -181,14 +189,14 @@ class Knight extends Piece {
 class Bishop extends Piece {
     checkIfLegal(square, row, file) {
         if ((row != this.row) && (file != this.file)) {
-            return this.legalityIterate(Math.sign(row - this.row),  Math.sign(file - this.file), row, file);
+            return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file);
         } else return false;
     }
 }
 
 class Queen extends Piece {
     checkIfLegal(square, row, file) {
-        return this.legalityIterate(Math.sign(row - this.row),  Math.sign(file - this.file), row, file); //down from 25 lines
+        return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
     }
 };
 
