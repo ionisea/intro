@@ -195,7 +195,8 @@ class Queen extends Piece {
 
 class King extends Piece {
     checkIfLegal(square, row, file) {
-        if ((Math.abs(this.row - row) <= 1) || (Math.abs(this.file - file) <= 1)) {
+        if ((Math.abs(this.row - row) <= 1) && (Math.abs(this.file - file) <= 1)) {
+            console.log(Math.abs(this.row - row), Math.abs(this.file - file))
             return true
         } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
             return true
