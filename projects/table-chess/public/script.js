@@ -125,23 +125,26 @@ class Piece {
         play.board[row][file].piece = this;
         play.board[this.row][this.file].element.innerHTML = '';
         play.board[this.row][this.file].piece = undefined;
-        this.row = row
-        this.file = file
+        this.row = row;
+        this.file = file;
         turn();
     }
 
-     legalityIterate (dRow, dFile, eRow, eFile) {
+    legalityIterate(dRow, dFile, eRow, eFile) {
         console.log(`(${this.row}, ${this.file})`)
         console.log('dRow', dRow);
         console.log('dFile', dFile);
         console.log('eRow', eRow);
         console.log('eFile', eFile);
-        for (let row = this.row + dRow; row += dRow; row != eRow) {
-            for (let file = this.file + dFile; file += dFile; file != eFile) {
-                if (play.board[row][file].piece != undefined) {
-                    return false;
-                }
+
+        let row = this.row + dRow;
+        let file = this.file + dFile; // the for loop that was here before was far worse
+        while ((row != eRow) || (file != eFile)) {
+            if ((play.board)[row][file].piece != undefined) {
+                return false;
             }
+            row += dRow;
+            file += dFile;
         }
         return true;
     }
@@ -159,8 +162,10 @@ class Pawn extends Piece {
 
 class Rook extends Piece {
     checkIfLegal(square, row, file) {
-        if (( (row == this.row) && !(file == this.file )) || ( !(row == this.row) && (file == this.file ) )){
-        return this.legalityIterate(Math.sign(row - this.row), 0, row, file) || this.legalityIterate(0, Math.sign(file- this.file), row, file);
+        if ((row == this.row) && !(file == this.file)) {
+            return this.legalityIterate(0, Math.sign(file - this.file), row, file);
+        } else if (!(row == this.row) && (file == this.file)) {
+            return this.legalityIterate(Math.sign(row - this.row), 0, row, file);
         } else return false;
     }
 }
@@ -175,49 +180,15 @@ class Knight extends Piece {
 
 class Bishop extends Piece {
     checkIfLegal(square, row, file) {
-        if (Math.abs(Math.abs(this.row - row) / Math.abs(this.file - file)) === 1) {
-            let r = this.row + Math.sign(row - this.row)
-            let f = this.file + Math.sign(file - this.file)
-            while ((r != row) && (f != file)) {
-                if (play.board[r][f].piece != undefined) {
-                    return false
-                }
-                r += Math.sign(row - this.row)
-                f += Math.sign(file - this.file)
-            }
-            return true;
-        } else return false
+        if ((row != this.row) && (file != this.file)) {
+            return this.legalityIterate(Math.sign(row - this.row),  Math.sign(file - this.file), row, file);
+        } else return false;
     }
 }
 
 class Queen extends Piece {
     checkIfLegal(square, row, file) {
-        if (Math.abs(Math.abs(this.row - row) / Math.abs(this.file - file)) === 1) {
-            let r = this.row + Math.sign(row - this.row)
-            let f = this.file + Math.sign(file - this.file)
-            while ((r != row) && (f != file)) {
-                if (play.board[r][f].piece != undefined) {
-                    return false
-                }
-                r += Math.sign(row - this.row)
-                f += Math.sign(file - this.file)
-            }
-            return true;
-        } else if ((this.row == row)) {
-            for (let i = Math.min(this.file, file) + 1; i < Math.max(this.file, file); i++) {
-                if (play.board[this.row][i].piece != undefined) {
-                    return false;
-                }
-            }
-            return true;
-        } else if (this.file == file) {
-            for (let i = Math.min(this.row, row) + 1; i < Math.max(this.row, row); i++) {
-                if (play.board[i][this.file].piece != undefined) {
-                    return false;
-                }
-            }
-            return true;
-        } else return false;
+        return this.legalityIterate(Math.sign(row - this.row),  Math.sign(file - this.file), row, file); //down from 25 lines
     }
 };
 
