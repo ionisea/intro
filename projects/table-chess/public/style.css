@@ -8,6 +8,9 @@
   src: url(freefont-20120503/FreeMonoBold.woff)
 }
 
+html, body{
+  background-color: darkred;
+}
 #whiteDisp {
   background-color: green;
   margin-left: 30%;

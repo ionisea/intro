@@ -1,5 +1,6 @@
 let play = {
     board: [],
+    alGoreEnabled: true,
     visualBoard: document.getElementById('board'),
     player: 'white',
     pickedUp: undefined,
@@ -9,6 +10,24 @@ let play = {
     kings: undefined,
 }
 document.addEventListener("selectstart", event => event.preventDefault());
+
+const alGoreRhythm = () => { //self made chess algorithm that will move psuedo randomly (it is horribly slow as it is doing up to millions of iterations per move)
+    console.log(`ching ching`)
+    while (true) {
+        let square = (play.board)[Math.floor(Math.random() * 8)][Math.floor(Math.random() * 8)]; //this is not yet working
+        if ((square.piece != undefined) && (square.piece.color == "black")) {
+            let r = Math.floor(Math.random() * 8)
+            let f = Math.floor(Math.random() * 8)
+            if (square.piece.checkIfLegal(r, f)) {
+                console.log(square.piece, r, f)
+                // alert(`chig`)
+                square.piece.placePiece(r, f);
+                turn();
+                break;
+            }
+        }
+    }
+}
 
 const refaceTiles = () => {
     for (const row of play.board) {
@@ -41,8 +60,9 @@ const turn = () => {
             }
         })
     })
-    console.log(play.board)
+    //  console.log(play.board)
     refaceTiles();
+    if ((play.player == 'black') && play.alGoreEnabled) alGoreRhythm();
 }
 
 document.onkeydown = (k) => {
@@ -59,18 +79,28 @@ document.onkeydown = (k) => {
         refaceTiles();
     }
     if (k.key === 'm') console.log(moves)
+    if (k.key === 'c') console.log(play.board[Math.floor(Math.random() * 8)][Math.floor(Math.random() * 8)].piece);
 }
 
-const inverseColor = {
-    darkgreen: 'saddlebrown',
-    lightgreen: 'sandybrown',
-    saddlebrown: 'darkgreen',
-    sandybrown: 'lightgreen',
+
+const inverse = { // gonna have to wrap this in a class later (castling is more important)
+    green: {
+        darkgreen: 'saddlebrown',
+        lightgreen: 'sandybrown',
+        saddlebrown: 'darkgreen',
+        sandybrown: 'lightgreen',
+    }, red: {
+        maroon: 'saddlebrown',
+        red: 'sandybrown',
+        saddlebrown: 'maroon',
+        sandybrown: 'red',
+    }
 }
+
 const colorNormal = () => {
     play.board.forEach(row => row.forEach(e => {
         if (e.element.style.backgroundColor.endsWith("green")) {
-            e.element.style.backgroundColor = inverseColor[e.element.style.backgroundColor];
+            e.element.style.backgroundColor = inverse.green[e.element.style.backgroundColor];
         }
     }))
 }
@@ -82,9 +112,9 @@ const squareClicked = (square) => {
     const c = square.style.backgroundColor
     if ((visualSquare.piece != undefined) && (visualSquare.piece.color === play.player) && (play.pickedUp == undefined)) {
         colorNormal();
-        square.style.backgroundColor = inverseColor[c]
+        square.style.backgroundColor = inverse.green[c]
         play.pickedUp = visualSquare.piece
-    } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal( r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
+    } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal(r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
         play.moves.push({ id: play.pickedUp.id, start: { row: parseInt(`${play.pickedUp.row}`), file: parseInt(`${play.pickedUp.file}`) }, end: { row: r, file: f }, piece: play.pickedUp })
         play.pickedUp.placePiece(r, f)
     } else if (visualSquare.piece === play.pickedUp) {
@@ -137,14 +167,18 @@ class Piece {
         play.board[this.row][this.file].piece = undefined;
         this.row = row;
         this.file = file;
-       // alert('change')
-        if (play.kings[this.color].isChecked()) {
-           // alert("check")
+        // alert('change')
+        const checks = play.kings[this.color].isChecked();
+        if (checks.length > 1) {
+            // alert("check")
             play.board[oldRow][oldFile].piece = this;
             play.board[row][file].piece = store;
-            alert(`this does not get you out of check!`)
+            checks.forEach(c => document.getElementById(`${c.row}${c.file}`).style.backgroundColor = inverse.red[document.getElementById(`${c.row}${c.file}`).style.backgroundColor])
+            setTimeout(() => {
+                checks.forEach(c => document.getElementById(`${c.row}${c.file}`).style.backgroundColor = inverse.red[document.getElementById(`${c.row}${c.file}`).style.backgroundColor])
+            }, 1500)
         } else {
-           // alert(`no check`)
+            // alert(`no check`)
             play.board[row][file].element.innerHTML = this.face;
             play.board[row][file].element.style.color = this.color;
             play.board[this.row][this.file].element.innerHTML = '';
@@ -175,7 +209,7 @@ class Piece {
 }
 
 class Pawn extends Piece {
-    checkIfLegal( row, file) {
+    checkIfLegal(row, file) {
         if ((row == this.row - 1) && (this.file == file) && (play.board[row][file].piece == undefined)) return true
         else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined) && (play.board[row][file].piece == undefined)) return true
         else if ((row == this.row - 1) && (Math.abs(file - this.file) == 1) && (play.board[row][file].piece.color !== this.color)) return true
@@ -184,7 +218,7 @@ class Pawn extends Piece {
 }
 
 class Rook extends Piece {
-    checkIfLegal( row, file) {
+    checkIfLegal(row, file) {
         if ((row == this.row) && !(file == this.file)) {
             return this.legalityIterate(0, Math.sign(file - this.file), row, file);
         } else if (!(row == this.row) && (file == this.file)) {
@@ -194,7 +228,7 @@ class Rook extends Piece {
 }
 
 class Knight extends Piece {
-    checkIfLegal( row, file) {
+    checkIfLegal(row, file) {
         if ((Math.abs(this.row - row) === 2) && (Math.abs(this.file - file) === 1) || (Math.abs(this.row - row) === 1) && (Math.abs(this.file - file) === 2)) {
             return true
         } else return false;
@@ -202,7 +236,7 @@ class Knight extends Piece {
 }
 
 class Bishop extends Piece {
-    checkIfLegal( row, file) {
+    checkIfLegal(row, file) {
         if ((row != this.row) && (file != this.file) && (Math.abs((row - this.row) / (file - this.file)) == 1)) {
             return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file);
         } else return false;
@@ -210,15 +244,16 @@ class Bishop extends Piece {
 }
 
 class Queen extends Piece {
-    checkIfLegal( row, file) {
-        if ((Math.abs((row - this.row) / (file - this.file)) == 1) || ((row - this.row) == 0) || ((file - this.file) == 0))
+    checkIfLegal(row, file) {
+        if ((Math.abs((row - this.row) / (file - this.file)) == 1) || ((row - this.row) == 0) || ((file - this.file) == 0)) {
             return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
+        } else return false;
     }
 };
 
 
 class King extends Piece {
-    checkIfLegal( row, file) {
+    checkIfLegal(row, file) {
         if ((Math.abs(this.row - row) <= 1) && (Math.abs(this.file - file) <= 1)) {
             return true;
         } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
@@ -227,12 +262,12 @@ class King extends Piece {
     }
 
     isChecked() {
-        let x = false
+        let x = [this]
         play.board.forEach(row => row.forEach(e => {
             console.log("check check", e);
-            if ((e.piece != undefined) && (e.piece.color != this.color) && (e.piece.checkIfLegal( this.row, this.file))) {
+            if ((e.piece != undefined) && (e.piece.color != this.color) && (e.piece.checkIfLegal(this.row, this.file))) {
                 console.log("HIT!", e)
-               x = true
+                x.push(e.piece)
             }// checks each piece on the other side to see if that piece can take the king
         }))
         return x; // revert to find loop after finish testing
@@ -248,7 +283,7 @@ class God extends Piece {
 const initPieces = () => {
     play.classOrder = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook, Pawn];
     play.faceOrder = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']; // used with check detection
-
+    //console.log(new Date(Date.now()).toString()) //testing purposes
     for (let x = 0; x <= 7; x++) {
         play.board[0][x].piece = new play.classOrder[x](0, x, 'black', play.faceOrder[x], Math.random())
         play.board[7][x].piece = new play.classOrder[x](7, x, 'white', play.faceOrder[x], Math.random())
