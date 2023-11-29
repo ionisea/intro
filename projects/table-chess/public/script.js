@@ -137,14 +137,14 @@ class Piece {
         play.board[this.row][this.file].piece = undefined;
         this.row = row;
         this.file = file;
-        alert('change')
+       // alert('change')
         if (play.kings[this.color].isChecked()) {
-            alert("check")
+           // alert("check")
             play.board[oldRow][oldFile].piece = this;
             play.board[row][file].piece = store;
             alert(`this does not get you out of check!`)
         } else {
-            alert(`no check`)
+           // alert(`no check`)
             play.board[row][file].element.innerHTML = this.face;
             play.board[row][file].element.style.color = this.color;
             play.board[this.row][this.file].element.innerHTML = '';
