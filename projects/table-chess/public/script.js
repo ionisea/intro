@@ -24,6 +24,8 @@ const refaceTiles = () => {
 }
 
 const turn = () => {
+    colorNormal();
+    play.pickedUp = undefined;
     play[`${play.player}Display`].style.backgroundColor = `transparent`
     play.player = play.player === 'black' ? 'white' : 'black'
     play[`${play.player}Display`].style.backgroundColor = `green`
@@ -78,20 +80,16 @@ const squareClicked = (square) => {
     const f = parseInt(square.id[1])
     const visualSquare = play.board[r][f]
     const c = square.style.backgroundColor
-    if (play.kings[play.player]) {
-        if ((visualSquare.piece != undefined) && (visualSquare.piece.color === play.player) && (play.pickedUp == undefined)) {
-            colorNormal();
-            square.style.backgroundColor = inverseColor[c]
-            play.pickedUp = visualSquare.piece
-        } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal(visualSquare, r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
-            colorNormal();
-            play.pickedUp.placePiece(r, f)
-            play.moves.push({ id: play.pickedUp.id, start: { row: parseInt(`${play.pickedUp.row}`), file: parseInt(`${play.pickedUp.file}`) }, end: { row: r, file: f }, id: play.pickedUp, piece: play.pickedUp })
-            play.pickedUp = undefined
-        } else if (visualSquare.piece === play.pickedUp) {
-            colorNormal();
-            play.pickedUp = undefined
-        }
+    if ((visualSquare.piece != undefined) && (visualSquare.piece.color === play.player) && (play.pickedUp == undefined)) {
+        colorNormal();
+        square.style.backgroundColor = inverseColor[c]
+        play.pickedUp = visualSquare.piece
+    } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal( r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
+        play.moves.push({ id: play.pickedUp.id, start: { row: parseInt(`${play.pickedUp.row}`), file: parseInt(`${play.pickedUp.file}`) }, end: { row: r, file: f }, piece: play.pickedUp })
+        play.pickedUp.placePiece(r, f)
+    } else if (visualSquare.piece === play.pickedUp) {
+        colorNormal();
+        play.pickedUp = undefined
     }
 }
 
@@ -117,25 +115,42 @@ const initBoard = () => {
 
 class Piece {
     constructor(row, file, color, face, id) {
-        this.file = file,
-            this.row = row,
-            this.color = color,
-            this.face = face
+        this.file = file
+        this.row = row
+        this.color = color
+        this.face = face
         this.id = id
     }
 
     placePiece(row, file) {
-        if (play.board[row][file].piece !== undefined) {
+        let store;
+        if (play.board[row][file].piece != undefined) {
+            const piece = play.board[row][file].piece;
             play[`${play.player}Display`].innerHTML += play.board[row][file].piece.face
+            store = new play.classOrder[play.faceOrder.findIndex(e => e == piece.face)](row, file, piece.color, piece.face, piece.id)
         }
-        play.board[row][file].element.innerHTML = this.face;
-        play.board[row][file].element.style.color = this.color;
+
+        const oldRow = parseInt(`${this.row}`); //throw off the pointers (this was an issue)
+        const oldFile = parseInt(`${this.file}`);
+
         play.board[row][file].piece = this;
-        play.board[this.row][this.file].element.innerHTML = '';
         play.board[this.row][this.file].piece = undefined;
         this.row = row;
         this.file = file;
-        turn();
+        alert('change')
+        if (play.kings[this.color].isChecked()) {
+            alert("check")
+            play.board[oldRow][oldFile].piece = this;
+            play.board[row][file].piece = store;
+            alert(`this does not get you out of check!`)
+        } else {
+            alert(`no check`)
+            play.board[row][file].element.innerHTML = this.face;
+            play.board[row][file].element.style.color = this.color;
+            play.board[this.row][this.file].element.innerHTML = '';
+            turn();
+        }
+        console.log(this, play.board[row][file].piece)
     }
 
     legalityIterate(dRow, dFile, eRow, eFile) {
@@ -160,7 +175,7 @@ class Piece {
 }
 
 class Pawn extends Piece {
-    checkIfLegal(square, row, file) {
+    checkIfLegal( row, file) {
         if ((row == this.row - 1) && (this.file == file) && (play.board[row][file].piece == undefined)) return true
         else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined) && (play.board[row][file].piece == undefined)) return true
         else if ((row == this.row - 1) && (Math.abs(file - this.file) == 1) && (play.board[row][file].piece.color !== this.color)) return true
@@ -169,7 +184,7 @@ class Pawn extends Piece {
 }
 
 class Rook extends Piece {
-    checkIfLegal(square, row, file) {
+    checkIfLegal( row, file) {
         if ((row == this.row) && !(file == this.file)) {
             return this.legalityIterate(0, Math.sign(file - this.file), row, file);
         } else if (!(row == this.row) && (file == this.file)) {
@@ -179,7 +194,7 @@ class Rook extends Piece {
 }
 
 class Knight extends Piece {
-    checkIfLegal(square, row, file) {
+    checkIfLegal( row, file) {
         if ((Math.abs(this.row - row) === 2) && (Math.abs(this.file - file) === 1) || (Math.abs(this.row - row) === 1) && (Math.abs(this.file - file) === 2)) {
             return true
         } else return false;
@@ -187,33 +202,40 @@ class Knight extends Piece {
 }
 
 class Bishop extends Piece {
-    checkIfLegal(square, row, file) {
-        if ((row != this.row) && (file != this.file)) {
+    checkIfLegal( row, file) {
+        if ((row != this.row) && (file != this.file) && (Math.abs((row - this.row) / (file - this.file)) == 1)) {
             return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file);
         } else return false;
     }
 }
 
 class Queen extends Piece {
-    checkIfLegal(square, row, file) {
-        return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
+    checkIfLegal( row, file) {
+        if ((Math.abs((row - this.row) / (file - this.file)) == 1) || ((row - this.row) == 0) || ((file - this.file) == 0))
+            return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
     }
 };
 
 
 class King extends Piece {
-    checkIfLegal(square, row, file) {
+    checkIfLegal( row, file) {
         if ((Math.abs(this.row - row) <= 1) && (Math.abs(this.file - file) <= 1)) {
-            console.log(Math.abs(this.row - row), Math.abs(this.file - file))
-            return true
+            return true;
         } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
-            return true
+            return true; //fix
         } else return false;
     }
 
-    isChecked(x, y) {
-        return false // temp
-
+    isChecked() {
+        let x = false
+        play.board.forEach(row => row.forEach(e => {
+            console.log("check check", e);
+            if ((e.piece != undefined) && (e.piece.color != this.color) && (e.piece.checkIfLegal( this.row, this.file))) {
+                console.log("HIT!", e)
+               x = true
+            }// checks each piece on the other side to see if that piece can take the king
+        }))
+        return x; // revert to find loop after finish testing
     }
 }
 
@@ -224,11 +246,12 @@ class God extends Piece {
 }
 
 const initPieces = () => {
-    const classOrder = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-    const faceOrder = ['♜', '♞', '♝', '♛', '', '♝', '♞', '♜']
+    play.classOrder = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook, Pawn];
+    play.faceOrder = ['♜', '♞', '♝', '♛', '♚', '♝', '♞', '♜', '♟']; // used with check detection
+
     for (let x = 0; x <= 7; x++) {
-        play.board[0][x].piece = new classOrder[x](0, x, 'black', faceOrder[x], Math.random())
-        play.board[7][x].piece = new classOrder[x](7, x, 'white', faceOrder[x], Math.random())
+        play.board[0][x].piece = new play.classOrder[x](0, x, 'black', play.faceOrder[x], Math.random())
+        play.board[7][x].piece = new play.classOrder[x](7, x, 'white', play.faceOrder[x], Math.random())
         play.board[1][x].piece = new Pawn(1, x, 'black', '♟', Math.random());
         play.board[6][x].piece = new Pawn(6, x, 'white', '♟', Math.random());
     }
