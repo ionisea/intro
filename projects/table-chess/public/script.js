@@ -1,6 +1,6 @@
 let play = {
     board: [],
-    alGoreEnabled: true,
+    alGoreEnabled: false,
     visualBoard: document.getElementById('board'),
     player: 'white',
     pickedUp: undefined,
@@ -11,22 +11,19 @@ let play = {
 }
 document.addEventListener("selectstart", event => event.preventDefault());
 
-const alGoreRhythm = () => { //self made chess algorithm that will move psuedo randomly (it is horribly slow as it is doing up to millions of iterations per move)
-    console.log(`ching ching`)
-    while (true) {
-        let square = (play.board)[Math.floor(Math.random() * 8)][Math.floor(Math.random() * 8)]; //this is not yet working
-        if ((square.piece != undefined) && (square.piece.color == "black")) {
-            let r = Math.floor(Math.random() * 8)
-            let f = Math.floor(Math.random() * 8)
-            if (square.piece.checkIfLegal(r, f)) {
-                console.log(square.piece, r, f)
-                // alert(`chig`)
-                square.piece.placePiece(r, f);
-                turn();
-                break;
-            }
-        }
-    }
+const alGoreRhythm = (inp) => { //self made chess algorithm that will move psuedo randomly (it is horribly slow as it is doing up to millions of iterations per move)
+    console.log("inp", inp) // trouble shooting purposes
+    let square = (play.board)[Math.floor(Math.random() * 8)][Math.floor(Math.random() * 8)]; //this is not yet working
+    if ((square.piece != undefined) && (square.piece.color == "black")) {
+        let r = Math.floor(Math.random() * 8)
+        let f = Math.floor(Math.random() * 8)
+        if (square.piece.checkIfLegal(r, f)) {
+            console.log(square.piece, r, f)
+            // alert(`chig`)
+            square.piece.placePiece(r, f);
+            return;
+        } //else alGoreRhythm(inp+1);
+    } alGoreRhythm(inp + 1);
 }
 
 const refaceTiles = () => {
@@ -62,7 +59,7 @@ const turn = () => {
     })
     //  console.log(play.board)
     refaceTiles();
-    if ((play.player == 'black') && play.alGoreEnabled) alGoreRhythm();
+    if ((play.player == 'black') && play.alGoreEnabled) alGoreRhythm(0);
 }
 
 document.onkeydown = (k) => {
@@ -80,6 +77,7 @@ document.onkeydown = (k) => {
     }
     if (k.key === 'm') console.log(moves)
     if (k.key === 'c') console.log(play.board[Math.floor(Math.random() * 8)][Math.floor(Math.random() * 8)].piece);
+    if (k.key === "a") play.alGoreEnabled = !play.alGoreEnabled;
 }
 
 
@@ -114,7 +112,7 @@ const squareClicked = (square) => {
         colorNormal();
         square.style.backgroundColor = inverse.green[c]
         play.pickedUp = visualSquare.piece
-    } else if ((play.pickedUp != undefined) && !(`${play.pickedUp.row}${play.pickedUp.file}` == square.id) && (play.pickedUp.checkIfLegal(r, f)) && ((visualSquare.piece == undefined) || (visualSquare.piece.color != play.player))) {
+    } else if ((play.pickedUp != undefined) && (play.pickedUp.checkIfLegal(r, f))) {
         play.moves.push({ id: play.pickedUp.id, start: { row: parseInt(`${play.pickedUp.row}`), file: parseInt(`${play.pickedUp.file}`) }, end: { row: r, file: f }, piece: play.pickedUp })
         play.pickedUp.placePiece(r, f)
     } else if (visualSquare.piece === play.pickedUp) {
@@ -177,6 +175,7 @@ class Piece {
             setTimeout(() => {
                 checks.forEach(c => document.getElementById(`${c.row}${c.file}`).style.backgroundColor = inverse.red[document.getElementById(`${c.row}${c.file}`).style.backgroundColor])
             }, 1500)
+            if ((play.player == 'black') && (play.alGoreEnabled)) alGoreRhythm();
         } else {
             // alert(`no check`)
             play.board[row][file].element.innerHTML = this.face;
@@ -210,67 +209,79 @@ class Piece {
 
 class Pawn extends Piece {
     checkIfLegal(row, file) {
-        if ((row == this.row - 1) && (this.file == file) && (play.board[row][file].piece == undefined)) return true
-        else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined) && (play.board[row][file].piece == undefined)) return true
-        else if ((row == this.row - 1) && (Math.abs(file - this.file) == 1) && (play.board[row][file].piece.color !== this.color)) return true
-        else return false //en passant later
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((row == this.row - 1) && (this.file == file) && (play.board[row][file].piece == undefined)) return true
+            else if ((this.file == file) && (this.row == 6) && (row == 4) && (play.board[5][file].piece == undefined) && (play.board[row][file].piece == undefined)) return true
+            else if ((row == this.row - 1) && (Math.abs(file - this.file) == 1) && (play.board[row][file].piece != undefined) && (play.board[row][file].piece.color !== this.color)) return true
+            else return false //en passant later
+        } else return false;
     }
 }
 
 class Rook extends Piece {
     checkIfLegal(row, file) {
-        if ((row == this.row) && !(file == this.file)) {
-            return this.legalityIterate(0, Math.sign(file - this.file), row, file);
-        } else if (!(row == this.row) && (file == this.file)) {
-            return this.legalityIterate(Math.sign(row - this.row), 0, row, file);
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((row == this.row) && !(file == this.file)) {
+                return this.legalityIterate(0, Math.sign(file - this.file), row, file);
+            } else if (!(row == this.row) && (file == this.file)) {
+                return this.legalityIterate(Math.sign(row - this.row), 0, row, file);
+            } else return false;
         } else return false;
     }
 }
 
 class Knight extends Piece {
     checkIfLegal(row, file) {
-        if ((Math.abs(this.row - row) === 2) && (Math.abs(this.file - file) === 1) || (Math.abs(this.row - row) === 1) && (Math.abs(this.file - file) === 2)) {
-            return true
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((Math.abs(this.row - row) === 2) && (Math.abs(this.file - file) === 1) || (Math.abs(this.row - row) === 1) && (Math.abs(this.file - file) === 2)) {
+                return true
+            } else return false;
         } else return false;
     }
 }
 
 class Bishop extends Piece {
     checkIfLegal(row, file) {
-        if ((row != this.row) && (file != this.file) && (Math.abs((row - this.row) / (file - this.file)) == 1)) {
-            return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file);
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((row != this.row) && (file != this.file) && (Math.abs((row - this.row) / (file - this.file)) == 1)) {
+                return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file);
+            } else return false;
         } else return false;
     }
 }
 
 class Queen extends Piece {
     checkIfLegal(row, file) {
-        if ((Math.abs((row - this.row) / (file - this.file)) == 1) || ((row - this.row) == 0) || ((file - this.file) == 0)) {
-            return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
-        } else return false;
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((Math.abs((row - this.row) / (file - this.file)) == 1) || ((row - this.row) == 0) || ((file - this.file) == 0)) {
+                return this.legalityIterate(Math.sign(row - this.row), Math.sign(file - this.file), row, file); //down from 25 lines
+            } else return false;
+        } else return false
     }
 };
 
 
 class King extends Piece {
     checkIfLegal(row, file) {
-        if ((Math.abs(this.row - row) <= 1) && (Math.abs(this.file - file) <= 1)) {
-            return true;
-        } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
-            return true; //fix
+        if (!((this.row == row) && (this.file == file)) && ((play.board[row][file].piece == undefined) || (play.board[row][file].piece.color != play.player))) {
+            if ((Math.abs(this.row - row) <= 1) && (Math.abs(this.file - file) <= 1)) {
+                return true;
+            } else if ((play.moves.find(e => (e.color === this.color) && (e.face === this.face)) === undefined) && (play.board[row][file].piece !== undefined) && (play.board[row][file].face == '♜') && (play.board[row][file].piece.color === 'white')) {
+                return true; //fix
+            } else return false;
         } else return false;
     }
 
     isChecked() {
-        let x = [this]
+        let highlight = [this]
         play.board.forEach(row => row.forEach(e => {
             console.log("check check", e);
             if ((e.piece != undefined) && (e.piece.color != this.color) && (e.piece.checkIfLegal(this.row, this.file))) {
                 console.log("HIT!", e)
-                x.push(e.piece)
+                highlight.push(e.piece)
             }// checks each piece on the other side to see if that piece can take the king
         }))
-        return x; // revert to find loop after finish testing
+        return highlight;
     }
 }
 
